@@ -9,12 +9,12 @@ function countBs(m) {
 }
 console.log(countBs("B0B"));
 function countChar(a,b) {
-    let coun = 0;
+    let count = 0;
     for (let i = 0 ; i < a.length; i = i+1) {
         if (a[i] == b) {
-            coun = coun + 1;
+            count = count + 1;
         }
     }
-    return coun;
+    return count;
 }
 console.log(countChar("kakkerlak", "k"));
