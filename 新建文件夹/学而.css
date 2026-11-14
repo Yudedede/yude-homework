@@ -225,6 +225,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    transition: all 0.3s ease;
 }
 .bai {
     width: 150px;
@@ -313,4 +314,7 @@ body {
     position: absolute;
     bottom: 23px;
     left:750px;
+}
+.lv:hover {
+    background-color: #1DC091;
 }
