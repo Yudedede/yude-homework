@@ -25,4 +25,7 @@ let obj = {here: {is: "an"}, object: 2};
 console.log(deepequal(obj, obj));
 console.log(deepequal(obj, {here: 1, object: 2}));
 console.log(deepequal(obj, {here: {is: "an"}, object: 2}));
+console.log
+let key in a
+!(key in b)
 
