@@ -1,0 +1,10 @@
+.main {
+    height: 98%;
+    width: 85%;
+    position:absolute;
+    right: 3px;
+    top:1%;
+    background-color: #0000004f;
+    border-radius: 12px;
+    border: 0.00001px solid rgba(255, 255, 255, 0.2);
+}

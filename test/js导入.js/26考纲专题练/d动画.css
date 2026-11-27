@@ -1,0 +1,39 @@
+.element {
+    animation-name: spin;
+    animation-duration: 3s;
+    animation-timing-function: ease;
+    animation-delay: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: reverse;
+    /* 保持最后状态 */
+    animation-fill-mode: forwards;
+}
+/* 悬停自动播放 */
+.element:hover {
+    animation-play-state: paused;
+    /* running */
+}
+
+
+
+
+
+
+
+@keyframes spin {
+    0% {
+
+    }
+    50% {
+        scale:2;
+        /* 变大 */
+        transform: rotate(0);
+        border-radius: 0;
+    }
+    100%{
+        /* 旋转 */
+        transform:rotate(360de) 
+    }
+}
+也可以写
+transform: rotateX(0) rotateY(0) z...

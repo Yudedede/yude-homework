@@ -1,0 +1,255 @@
+* {
+    margin: 0;
+    padding: 0;
+    /* test：防止撑破盒子 */
+    box-sizing: border-box;
+}
+body,html {
+    width: 100%;
+    height: 100%;
+    /* 不显示滚动 */
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.ground {
+    display: flex;
+    width:100%;
+    height:100vh;
+    /* test：网页留20留白？？ */
+    /* padding:20px; */
+    gap:20px;
+    background-color: #000000dd;
+
+}
+.sidebar {
+    width:130px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap:6px;
+    height:100%;
+    font-size: 9px;
+
+}
+
+
+.logoimg {
+    width: 25px;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+.xinjian {
+    width:100%;
+    height:25px;
+    /* background-color: ; */
+    color: white;
+    border-radius: 8px;
+    border: 0.09px solid #ffffff56;
+    display: flex;
+    align-items: center;
+    margin-left:10px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.xinimg {
+    padding-left: 4px;
+    padding-top: 2px
+    /* align-items: center; */
+}
+.wenben {
+    position:relative;
+    top:-6px;
+    flex-shrink: 0;
+}
+.kuai {
+    color: #ffffffba;
+    display: flex;
+    align-items: center;
+    gap:2px;
+    margin-left: auto;
+    position:relative;
+    right:5px;
+    flex-shrink: 0;
+}
+.ct {
+    /* margin-left: 10px; */
+    color: #ffffffba;
+    background-color: #ffffff1a;
+    height: 16px;
+    /* width: 13px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    width: 25px;
+
+}
+.k {
+    color: #ffffffba;
+    background-color: #ffffff1a;
+   display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    height: 16px;
+    width: 16px;
+}
+.dao {
+    color: rgba(255, 255, 255, 0.6);
+    position: relative;
+    left:72px;
+    /* top:px; */
+    cursor:pointer;
+
+}
+/* .logo {
+    /* display: flex; */
+    /* flex-direction: row; */
+    /* width:100%; */
+.wode {
+    width:100%;
+    color: white;
+    height:25px;
+    /* background-color: ; */
+    /* border-radius: 8px;
+    border: 0.09px solid #ffffff56; */
+    display: flex;
+    align-items: center;
+    margin-left:10px;
+    cursor: pointer;
+    flex-shrink: 0;
+    gap:3px;
+}
+.woimg {
+    padding-left: 3px;
+    padding-top: 1px
+}
+.wode:hover {
+    background-color: #ffffff1a;
+    border-radius: 8px; 
+    /* border: 0.09px solid #ffffff56;  */
+
+}
+.cha {
+    width:100%;
+    color: white;
+    height:25px;
+    display: flex;
+    align-items: center;
+    margin-left:10px;
+    cursor: pointer;
+    flex-shrink: 0;
+    gap:3px;
+}
+.chaimg{
+    padding-left: 3px;
+
+}
+.cha:hover {
+    background-color: #ffffff1a;
+    border-radius: 8px; 
+}
+.dingshi {
+    width:100%;
+    color: white;
+    height:25px;
+    display: flex;
+    align-items: center;
+    margin-left:10px;
+    cursor: pointer;
+    flex-shrink: 0;
+    gap:3px;
+}
+.dingimg {
+    padding-left: 3px;
+
+}
+.dingshi:hover {
+    background-color: #ffffff1a;
+    border-radius: 8px; 
+}
+.linggan {
+    width:100%;
+    color: white;
+    height:25px;
+    display: flex;
+    align-items: center;
+    margin-left:10px;
+    cursor: pointer;
+    flex-shrink: 0;
+    gap:1px;
+}
+.lingimg {
+    padding-left: 1px;
+
+}
+.linggan:hover {
+    background-color: #ffffff1a;
+    border-radius: 8px; 
+}
+.ppt {
+    width:100%;
+    color: white;
+    height:25px;
+    display: flex;
+    align-items: center;
+    margin-left:10px;
+    cursor: pointer;
+    flex-shrink: 0;
+    gap:1px;
+}
+.pptimg {
+    padding-left: 1px;
+
+}
+.ppt:hover {
+    background-color: #ffffff1a;
+    border-radius: 8px; 
+}
+.more {
+    width:100%;
+    color: white;
+    height:25px;
+    display: flex;
+    align-items: center;
+    margin-left:10px;
+    cursor: pointer;
+    flex-shrink: 0;
+    gap:1px;
+}
+.moreimg {
+    padding-left: 1px;
+
+}
+.more:hover {
+    background-color: #ffffff1a;
+    border-radius: 8px; 
+}
+.jiantou {
+    position:relative;
+    margin-left: auto;
+    right:4px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s , visibility 0.2s ;
+}
+.more:hover .jiantou{
+   opacity: 1;
+    visibility: visible;
+}
+.tankuang {
+    width:143px;
+    height: 220px;
+    background-color: #ffffff1a;
+    position: absolute;
+    top:36%;
+    left:3px;
+    border-radius: 10px;
+     opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s , visibility 0.2s ;
+}
+.ground:has(.more:hover) .tankuang {
+    opacity: 1;
+    visibility: visible;
+}

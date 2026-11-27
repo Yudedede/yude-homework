@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>homework 里的 JS：所有方法 + 知识点 + 拓展</title>
+<style>
+:root{
+  --paper:#fbfaf6; --ink:#24292f; --muted:#6b7280; --line:#e3ddd0;
+  --accent:#2f6f8f; --accent-soft:#e8f1f5; --code-bg:#f4f2ec;
+  --kw:#a626a4; --str:#2f7d4f; --num:#b76b01; --com:#8a8f98;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+  font-size:16px; line-height:1.75;
+}
+.layout{display:flex; align-items:flex-start}
+/* 侧边目录 */
+.side{
+  position:sticky; top:0; height:100vh; width:288px; flex:0 0 288px;
+  overflow-y:auto; padding:28px 18px 40px 26px; border-right:1px solid var(--line);
+  background:linear-gradient(180deg,#f7f5ef,#fbfaf6 40%);
+}
+.side .brand{font-weight:700;font-size:15px;letter-spacing:.02em;margin-bottom:2px}
+.side .brand span{color:var(--accent)}
+.side .sub{font-size:12px;color:var(--muted);margin-bottom:18px}
+.side nav{font-size:13.5px}
+.side a{
+  display:block;color:#4b5563;text-decoration:none;padding:4px 8px;border-radius:6px;
+  border-left:2px solid transparent;line-height:1.5;
+}
+.side a:hover{background:#efece2;color:#111}
+.side a.lv2{font-weight:600;margin-top:7px;color:#374151}
+.side a.lv3{padding-left:20px;font-size:12.5px;color:#6b7280}
+.side a.active{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent)}
+.side a.lv3.active{color:var(--accent)}
+/* 正文 */
+main{flex:1 1 auto;max-width:900px;margin:0 auto;padding:46px 40px 120px}
+h1{font-size:30px;line-height:1.3;margin:0 0 8px;letter-spacing:-.01em}
+h2{
+  font-size:22px;margin:54px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--line);
+  scroll-margin-top:18px;
+}
+h3{font-size:17px;margin:32px 0 8px;color:#1f3b4d;scroll-margin-top:18px}
+h3::before{content:"";display:inline-block;width:7px;height:7px;border-radius:2px;
+  background:var(--accent);margin-right:9px;vertical-align:2px}
+p{margin:12px 0}
+strong{color:#111827}
+code{
+  font-family:"Cascadia Code",Consolas,"Courier New",monospace;
+  font-size:.9em;background:#efece4;padding:1px 5px;border-radius:4px;color:#9d3b1f;
+}
+blockquote{
+  margin:16px 0;padding:12px 18px;background:var(--accent-soft);border-left:4px solid var(--accent);
+  border-radius:0 6px 6px 0;color:#31505e;font-size:14.5px;
+}
+blockquote p{margin:0}
+ul,ol{margin:10px 0;padding-left:26px}
+li{margin:5px 0}
+pre.code{
+  position:relative;margin:16px 0;padding:16px 18px;background:var(--code-bg);
+  border:1px solid #e6e1d4;border-radius:8px;overflow-x:auto;line-height:1.62;
+}
+pre.code code{
+  background:none;padding:0;color:#2b2b2b;font-size:13.2px;white-space:pre;
+}
+pre.code[data-lang]::before{
+  content:attr(data-lang);position:absolute;top:6px;right:10px;font-size:10.5px;
+  color:#a8a29e;letter-spacing:.08em;text-transform:uppercase;
+}
+.kw{color:var(--kw)} .str{color:var(--str)} .num{color:var(--num)} .com{color:var(--com);font-style:italic}
+.table-wrap{overflow-x:auto;margin:16px 0}
+table{border-collapse:collapse;width:100%;font-size:14px;background:#fffdf8}
+th,td{border:1px solid #e6e1d4;padding:8px 11px;text-align:left;vertical-align:top}
+th{background:#f1eee4;font-weight:600;white-space:nowrap}
+tbody tr:nth-child(even){background:#faf8f1}
+td code{font-size:.86em;white-space:nowrap}
+hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+@media (max-width:1080px){
+  .layout{display:block}
+  .side{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid var(--line);
+    padding:20px 22px}
+  .side nav{columns:2;column-gap:18px}
+  main{padding:26px 20px 80px}
+}
+@media print{
+  .side{display:none}
+  body{background:#fff;font-size:11.5pt}
+  main{padding:0;max-width:none}
+  pre.code{break-inside:avoid;background:#f7f7f7}
+  h2{break-after:avoid}
+  table{break-inside:auto}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <div class="brand">homework <span>·</span> JS 笔记</div>
+    <div class="sub">方法 · 知识点 · 拓展</div>
+    <nav><a class="lv2" href="#s2">0. 先说结论</a>
+<a class="lv2" href="#s3">1. 文件总览</a>
+<a class="lv2" href="#s4">2. 逐个文件：它教了什么</a>
+<a class="lv3" href="#s5">2.1 week2/最小值.js</a>
+<a class="lv3" href="#s6">2.2 week2/豆子计数.js</a>
+<a class="lv3" href="#s7">2.3 week2/递归.js</a>
+<a class="lv3" href="#s8">2.4 week2/范围内总合.js</a>
+<a class="lv3" href="#s9">2.5 week2/反转数组.js</a>
+<a class="lv3" href="#s10">2.6 week2/列表.js</a>
+<a class="lv3" href="#s11">2.7 week2/炸金花.js</a>
+<a class="lv3" href="#s12">2.8 week3/分组.js</a>
+<a class="lv3" href="#s13">2.9 week3/所有.js</a>
+<a class="lv3" href="#s14">2.10 week3/扁平化.js</a>
+<a class="lv3" href="#s15">2.11 week3/自己的循环.js</a>
+<a class="lv3" href="#s16">2.12 week3/原型的一些应用.JS</a>
+<a class="lv3" href="#s17">2.13 week3/向量类型.js</a>
+<a class="lv3" href="#s18">2.14 week3/力扣4/合并区间.js</a>
+<a class="lv3" href="#s19">2.15 week3/力扣4/子数列最大值.js</a>
+<a class="lv3" href="#s20">2.16 week3/力扣4/轮转数组.js</a>
+<a class="lv3" href="#s21">2.17 week3/力扣4/除自己外乘积.js</a>
+<a class="lv2" href="#s22">3. 方法手册（含拓展）</a>
+<a class="lv3" href="#s23">3.1 数组的四个角：push / pop / unshift / shift</a>
+<a class="lv3" href="#s24">3.2 任意位置增删：splice / slice</a>
+<a class="lv3" href="#s25">3.3 拼接、拍平、转字符串：concat / flat / join / Array.from</a>
+<a class="lv3" href="#s26">3.4 查找与判断：includes / indexOf / find / findIndex / some / every</a>
+<a class="lv3" href="#s27">3.5 遍历与变换：for...of / forEach / map / filter / reduce</a>
+<a class="lv3" href="#s28">3.6 排序与反转：sort / reverse / toSorted / at</a>
+<a class="lv3" href="#s29">3.7 数组的其它常识</a>
+<a class="lv3" href="#s30">3.8 字符串</a>
+<a class="lv3" href="#s31">3.9 Object：keys / values / entries / in / hasOwn / delete</a>
+<a class="lv3" href="#s32">3.10 Math 与数字</a>
+<a class="lv3" href="#s33">3.11 类型与比较：=== / == / typeof / NaN</a>
+<a class="lv3" href="#s34">3.12 函数：声明 / 表达式 / 箭头 / 默认参数 / 剩余参数</a>
+<a class="lv3" href="#s35">3.13 作用域与闭包</a>
+<a class="lv3" href="#s36">3.14 对象、new、原型、class、getter</a>
+<a class="lv3" href="#s37">3.15 递归</a>
+<a class="lv3" href="#s38">3.16 Set / Map（你那个 Group 的"正规"写法）</a>
+<a class="lv2" href="#s39">4. 算法知识点</a>
+<a class="lv2" href="#s40">5. 你代码里的坑（按文件）</a>
+<a class="lv2" href="#s41">6. 速查表：增删改查一张表</a>
+<a class="lv2" href="#s42">7. 建议的练习</a>
+<a class="lv2" href="#s43">附录：几个 HTML 里的 JS（不是 .js 文件，顺手补上）</a></nav>
+  </aside>
+  <main><h1 id="s1">homework 里的 JS：所有方法 + 知识点 + 拓展</h1>
+<blockquote><p>读法：每个方法只给两样东西 —— <strong>一句内涵</strong>（它是干嘛的、返回什么）+ <strong>一段能直接跑的示例</strong>（注释就是输出）。<br>文件位置：<code>homework/week2</code>、<code>homework/week3</code>，用 <code>node 文件名.js</code> 就能跑。</p></blockquote>
+<h2 id="s2">0. 先说结论</h2>
+<p>17 个有内容的 <code>.js</code> 文件里（另有一个 0 字节空文件），真正"反复出现"的东西只有五类：</p>
+<ul><li><strong>数组方法</strong>：<code>push</code>、<code>unshift</code>、<code>pop</code>、<code>filter</code>、<code>sort</code>、<code>includes</code>、<code>concat</code>、<code>reduce</code>、<code>some</code></li><li><strong>对象/原型</strong>：<code>Object.keys</code>、<code>prototype</code>、<code>class</code>、<code>this</code>、<code>get</code></li><li><strong>函数与作用域</strong>：回调、箭头函数、递归、默认参数、闭包</li><li><strong>算法套路</strong>：计数、双指针、Kadane、排序后扫描、前缀积</li><li><strong>几个坑</strong>：隐式全局变量、<code>==</code>、<code>pop</code> 传参、重复代码、空数组的 <code>every</code></li></ul>
+<p>下面先按文件过一遍，再按方法系统展开（含 <code>push</code> 的兄弟们）。</p>
+<h2 id="s3">1. 文件总览</h2>
+<div class="table-wrap"><table><thead><tr><th>文件</th><th>一句话在做什么</th><th>涉及的方法 / 语法</th></tr></thead><tbody><tr><td>week2/最小值.js</td><td>返回两个数里小的那个</td><td>函数声明、三元运算符、比较</td></tr><tr><td>week2/豆子计数.js</td><td>数字符串里某个字符出现几次</td><td><code>length</code>、<code>s[i]</code>、for、<code>==</code>、计数</td></tr><tr><td>week2/递归.js</td><td>用递归判断偶数</td><td>递归、终止条件、<code>else if</code></td></tr><tr><td>week2/范围内总合.js</td><td>生成 start 到 end 的数组再求和</td><td>默认参数、<code>push</code>、<code>for...of</code></td></tr><tr><td>week2/反转数组.js</td><td>两种反转：返回新数组 / 原地交换</td><td><code>unshift</code>、<code>Math.floor</code>、双指针</td></tr><tr><td>week2/列表.js</td><td>深比较两个对象是否"长得一样"</td><td><code>Object.keys</code>、<code>includes</code>、递归、<code>===</code></td></tr><tr><td>week2/炸金花.js</td><td>判断 7 张牌里有没有同花顺</td><td><code>filter</code>、<code>sort</code> 比较器、<code>push</code>、<code>%</code>、连号计数</td></tr><tr><td>week3/分组.js</td><td>手写一个集合类 Group</td><td><code>class</code>、<code>constructor</code>、<code>this</code>、<code>push</code>、<code>includes</code>、<code>filter</code></td></tr><tr><td>week3/所有.js</td><td>手写 every（两种写法）</td><td>回调、箭头函数、<code>some</code>、德摩根律</td></tr><tr><td>week3/扁平化.js</td><td>二维数组拍平</td><td><code>reduce</code>、<code>concat</code></td></tr><tr><td>week3/自己的循环.js</td><td>用递归模拟 for 循环</td><td>高阶函数、递归、函数当参数</td></tr><tr><td>week3/原型的一些应用.JS</td><td>构造函数 + 原型方法管理学生成绩</td><td><code>prototype</code>、<code>new</code>、<code>this</code>、展开拷贝、<code>push</code></td></tr><tr><td>week3/向量类型.js</td><td>二维向量类：加、减、求长度</td><td><code>class</code>、getter、<code>**</code>、<code>Math.sqrt</code></td></tr><tr><td>week3/主要书写方向.js</td><td>空文件（0 字节）</td><td>无</td></tr><tr><td>week3/力扣4/合并区间.js</td><td>排序后合并区间（没写完）</td><td>二维 <code>sort</code> 比较器、<code>const</code></td></tr><tr><td>week3/力扣4/子数列最大值.js</td><td>最大子序和</td><td>Kadane、<code>Math.max</code></td></tr><tr><td>week3/力扣4/轮转数组.js</td><td>数组右移 k 次</td><td><code>unshift</code>、<code>pop</code>、<code>length - 1</code></td></tr><tr><td>week3/力扣4/除自己外乘积.js</td><td>每个位置"除自己以外"的乘积</td><td><code>new Array</code>、双层循环、<code>continue</code></td></tr></tbody></table></div>
+<h2 id="s4">2. 逐个文件：它教了什么</h2>
+<p>下面按文件过一遍（<code>week3/主要书写方向.js</code> 是 0 字节空文件，没有内容可拆，见第 5 节）。</p>
+<h3 id="s5">2.1 week2/最小值.js</h3>
+<p>知识点：<strong>函数声明</strong>、<strong>三元运算符</strong>、比较运算。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> min(a, b) {
+  <span class="kw">return</span> a &lt;= b ? a : b;   <span class="com">// 条件 ? 成立时的值 : 不成立时的值</span>
+}
+console.log(min(<span class="num">0</span>, <span class="num">10</span>));   <span class="com">// 0</span>
+console.log(min(<span class="num">0</span>, -<span class="num">10</span>));  <span class="com">// -10</span></code></pre>
+<p>拓展：原生 <code>Math.min</code> 直接就有，而且能接任意多个参数。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Math.min(<span class="num">3</span>, <span class="num">1</span>, <span class="num">2</span>));      <span class="com">// 1</span>
+console.log(Math.min(...[<span class="num">3</span>, <span class="num">1</span>, <span class="num">2</span>])); <span class="com">// 1 ← 数组要先展开</span></code></pre>
+<h3 id="s6">2.2 week2/豆子计数.js</h3>
+<p>知识点：字符串的 <code>length</code>、用下标 <code>s[i]</code> 取字符、for 计数、<strong>把"数某个字符"抽象成带参数的函数</strong>。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> countChar(str, ch) {
+  <span class="kw">let</span> count = <span class="num">0</span>;
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; str.length; i++) {
+    <span class="kw">if</span> (str[i] === ch) count++;   <span class="com">// 原代码用的是 ==，建议 ===</span>
+  }
+  <span class="kw">return</span> count;
+}
+console.log(countChar(<span class="str">'kakkerlak'</span>, <span class="str">'k'</span>)); <span class="com">// 4</span>
+console.log(countChar(<span class="str">'B0B'</span>, <span class="str">'B'</span>));       <span class="com">// 2 ← countBs 就是它的特例</span></code></pre>
+<p>拓展：<code>split</code> 也能数，一行搞定。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="str">'kakkerlak'</span>.split(<span class="str">'k'</span>).length - <span class="num">1</span>); <span class="com">// 4</span></code></pre>
+<h3 id="s7">2.3 week2/递归.js</h3>
+<p>知识点：<strong>递归三件套</strong> —— 终止条件、缩小规模、调用自己。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> isEven(n) {
+  <span class="kw">if</span> (n === <span class="num">0</span>) <span class="kw">return</span> <span class="kw">true</span>;          <span class="com">// 终止条件</span>
+  <span class="kw">if</span> (n === <span class="num">1</span>) <span class="kw">return</span> <span class="kw">false</span>;         <span class="com">// 终止条件</span>
+  <span class="kw">if</span> (n &lt; <span class="num">0</span>) <span class="kw">return</span> <span class="str">'应输入正整数'</span>;
+  <span class="kw">return</span> isEven(n - <span class="num">2</span>);              <span class="com">// 规模缩小 2</span>
+}
+console.log(isEven(<span class="num">50</span>)); <span class="com">// true</span>
+console.log(isEven(<span class="num">75</span>)); <span class="com">// false</span>
+console.log(isEven(-<span class="num">1</span>)); <span class="com">// 应输入正整数</span></code></pre>
+<p>注意：每次只减 2，n 很大时调用栈会撑爆。判断偶数有 O(1) 写法：</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> isEven = n =&gt; Math.abs(n) % <span class="num">2</span> === <span class="num">0</span>;   <span class="com">// 负数取绝对值，因为 -3 % 2 是 -1</span></code></pre>
+<h3 id="s8">2.4 week2/范围内总合.js</h3>
+<p>知识点：<strong>默认参数</strong>、<code>push</code> 建数组、<code>for...of</code> 遍历、函数组合（先 range 再 sum）。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> range(start, end, step = <span class="num">1</span>) {   <span class="com">// 不传 step 就是 1</span>
+  <span class="kw">const</span> result = [];                     <span class="com">// 原代码没写 const/let，会变成全局变量</span>
+  <span class="kw">for</span> (<span class="kw">let</span> i = start; step &gt; <span class="num">0</span> ? i &lt;= end : i &gt;= end; i += step) {
+    result.push(i);
+  }
+  <span class="kw">return</span> result;
+}
+<span class="kw">function</span> sum(numbers) {
+  <span class="kw">let</span> total = <span class="num">0</span>;
+  <span class="kw">for</span> (<span class="kw">const</span> n <span class="kw">of</span> numbers) total += n;   <span class="com">// for...of 直接拿值</span>
+  <span class="kw">return</span> total;
+}
+console.log(range(<span class="num">5</span>, <span class="num">2</span>, -<span class="num">1</span>));  <span class="com">// [5, 4, 3, 2]</span>
+console.log(sum(range(<span class="num">1</span>, <span class="num">10</span>))); <span class="com">// 55</span></code></pre>
+<p>原版把 start 和 end 的大小关系拆成两个 <code>for</code>，这里合成一个条件判断；另外原版如果 <code>start &lt; end</code> 又传了负的 step，会死循环。</p>
+<h3 id="s9">2.5 week2/反转数组.js</h3>
+<p>知识点：<code>unshift</code> 往头上插 → 天然倒序；<strong>原地交换</strong>（首尾对调）。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> reverseArray(a) {
+  <span class="kw">const</span> result = [];
+  <span class="kw">for</span> (<span class="kw">const</span> m <span class="kw">of</span> a) result.unshift(m);  <span class="com">// 每个都插到最前 → 顺序反了</span>
+  <span class="kw">return</span> result;
+}
+<span class="kw">function</span> reverseArrayInplace(a) {
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>, j = a.length - <span class="num">1</span>; i &lt; j; i++, j--) {
+    [a[i], a[j]] = [a[j], a[i]];         <span class="com">// 解构交换，不用中间变量</span>
+  }
+  <span class="kw">return</span> a;
+}
+console.log(reverseArray([<span class="str">'a'</span>, <span class="str">'b'</span>, <span class="str">'c'</span>]));      <span class="com">// ['c', 'b', 'a']</span>
+console.log(reverseArrayInplace([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>])); <span class="com">// [5, 4, 3, 2, 1]</span></code></pre>
+<p>上面原地版把你原来那段"按长度奇偶分情况"的循环条件换成了双指针，效果一样但好读很多。</p>
+<p>拓展：内置 <code>a.reverse()</code> 就是原地反转（见 3.6）。</p>
+<h3 id="s10">2.6 week2/列表.js</h3>
+<p>知识点：<code>Object.keys</code> 拿属性名数组、<code>includes</code> 判断存在、递归比较、<code>===</code> 比较引用。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> deepEqual(a, b) {
+  <span class="kw">if</span> (a === b) <span class="kw">return</span> <span class="kw">true</span>;                       <span class="com">// 基本类型 / 同一个引用</span>
+  <span class="kw">if</span> (<span class="kw">typeof</span> a !== <span class="str">'object'</span> || <span class="kw">typeof</span> b !== <span class="str">'object'</span> || a === <span class="kw">null</span> || b === <span class="kw">null</span>) <span class="kw">return</span> <span class="kw">false</span>;
+  <span class="kw">const</span> ka = Object.keys(a), kb = Object.keys(b);
+  <span class="kw">if</span> (ka.length !== kb.length) <span class="kw">return</span> <span class="kw">false</span>;      <span class="com">// 属性个数不一样</span>
+  <span class="kw">return</span> ka.every(k =&gt; Object.hasOwn(b, k) &amp;&amp; deepEqual(a[k], b[k]));
+}
+<span class="kw">const</span> obj = { here: { is: <span class="str">'an'</span> }, object: <span class="num">2</span> };
+console.log(deepEqual(obj, obj));                                    <span class="com">// true</span>
+console.log(deepEqual(obj, { here: <span class="num">1</span>, object: <span class="num">2</span> }));                  <span class="com">// false</span>
+console.log(deepEqual(obj, { here: { is: <span class="str">'an'</span> }, object: <span class="num">2</span> }));       <span class="com">// true</span></code></pre>
+<p>注意：上面的 <code>deepEqual</code> 是修好的版本。你原版里 <code>deepEqual(1, 2)</code> 会返回 <code>true</code>（两边 <code>Object.keys</code> 都是空数组），<code>deepEqual(null, {})</code> 会直接抛错。原因见第 5 节，修法见第 4 节。</p>
+<h3 id="s11">2.7 week2/炸金花.js</h3>
+<p>知识点：<code>filter</code> 按花色分桶、<code>sort</code> 传比较器、<code>% 13</code> 把 0~51 的牌号映射成点数、连号计数、提前 <code>return</code>。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="com">// 牌号 0~51：花色 = Math.floor(牌号 / 13)，点数 = 牌号 % 13（0 当 A）</span>
+<span class="kw">function</span> hasStraightFlush(cards) {
+  <span class="kw">for</span> (<span class="kw">let</span> suit = <span class="num">0</span>; suit &lt; <span class="num">4</span>; suit++) {
+    <span class="kw">const</span> ranks = cards
+      .filter(c =&gt; Math.floor(c / <span class="num">13</span>) === suit)   <span class="com">// 先取同一花色</span>
+      .map(c =&gt; c % <span class="num">13</span>)                           <span class="com">// 再换成点数</span>
+      .sort((x, y) =&gt; x - y);                     <span class="com">// 数字必须给比较器</span>
+    <span class="kw">if</span> (ranks.length &lt; <span class="num">5</span>) <span class="kw">continue</span>;               <span class="com">// 不够 5 张不用看</span>
+    <span class="kw">if</span> (ranks[<span class="num">0</span>] === <span class="num">0</span>) ranks.push(<span class="num">13</span>);           <span class="com">// A 也能当最大牌</span>
+    <span class="kw">let</span> run = <span class="num">1</span>;
+    <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; ranks.length - <span class="num">1</span>; i++) {
+      run = ranks[i] + <span class="num">1</span> === ranks[i + <span class="num">1</span>] ? run + <span class="num">1</span> : <span class="num">1</span>;
+      <span class="kw">if</span> (run &gt;= <span class="num">5</span>) <span class="kw">return</span> <span class="kw">true</span>;
+    }
+  }
+  <span class="kw">return</span> <span class="kw">false</span>;
+}
+console.log(hasStraightFlush([<span class="num">1</span>, <span class="num">2</span>, <span class="num">5</span>, <span class="num">8</span>, <span class="num">12</span>, <span class="num">20</span>, <span class="num">33</span>]));  <span class="com">// false：同花但凑不出五连</span>
+console.log(hasStraightFlush([<span class="num">1</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>, <span class="num">7</span>, <span class="num">8</span>, <span class="num">20</span>]));    <span class="com">// true：跳过散牌后有五连</span>
+console.log(hasStraightFlush([<span class="num">0</span>, <span class="num">3</span>, <span class="num">6</span>, <span class="num">9</span>, <span class="num">10</span>, <span class="num">11</span>, <span class="num">12</span>]));  <span class="com">// true：10-J-Q-K-A</span></code></pre>
+<p>你原来的版本把四段一模一样的代码抄了四遍，这里用「循环花色 + <code>continue</code>」压成一份 —— 这就是"提取重复代码"的思路。</p>
+<h3 id="s12">2.8 week3/分组.js</h3>
+<p>知识点：<code>class</code> + <code>constructor</code> + <code>this</code>、方法里操作实例数组、<code>includes</code> 判重、<code>filter</code> 删除。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">class</span> Group {
+  constructor() { <span class="kw">this</span>.m = []; }
+  from([x, y]) {                    <span class="com">// 参数解构：直接拿数组的两个值</span>
+    <span class="kw">for</span> (<span class="kw">let</span> i = x; i &lt;= y; i++) <span class="kw">this</span>.m.push(i);
+    <span class="kw">return</span> <span class="kw">this</span>.m;
+  }
+  add(x) {
+    <span class="kw">if</span> (!<span class="kw">this</span>.m.includes(x)) <span class="kw">this</span>.m.push(x);   <span class="com">// 有就不加 → 天然去重</span>
+  }
+  has(x) {
+    <span class="kw">return</span> <span class="kw">this</span>.m.includes(x);                 <span class="com">// 直接返回布尔值就行</span>
+  }
+  <span class="kw">delete</span>(x) {
+    <span class="kw">this</span>.m = <span class="kw">this</span>.m.filter(n =&gt; n !== x);      <span class="com">// filter 生成新数组再赋值</span>
+  }
+}
+<span class="kw">const</span> group = <span class="kw">new</span> Group();
+group.from([<span class="num">10</span>, <span class="num">12</span>]);
+group.add(<span class="num">11</span>);
+console.log(group.has(<span class="num">10</span>));  <span class="com">// true</span>
+console.log(group.m);        <span class="com">// [10, 11, 12]</span></code></pre>
+<p>注意：<code>from()</code> 每次调用都会<strong>追加</strong>，你连续调两次就出现了两遍 10~20。另外这个类的 <code>add / has / delete</code> 正好就是原生 <code>Set</code> 的接口（见 3.16）。</p>
+<h3 id="s13">2.9 week3/所有.js</h3>
+<p>知识点：<code>every</code> 的语义、把函数当参数传（回调）、箭头函数、用 <code>some</code> 取反。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> every(array, test) {
+  <span class="kw">for</span> (<span class="kw">const</span> x <span class="kw">of</span> array) {
+    <span class="kw">if</span> (!test(x)) <span class="kw">return</span> <span class="kw">false</span>;   <span class="com">// 出现一个不满足就 false</span>
+  }
+  <span class="kw">return</span> <span class="kw">true</span>;                    <span class="com">// 空数组走到这里 → true</span>
+}
+console.log(every([<span class="num">1</span>, <span class="num">3</span>, <span class="num">5</span>], n =&gt; n &lt; <span class="num">10</span>)); <span class="com">// true</span>
+console.log(every([<span class="num">2</span>, <span class="num">4</span>, <span class="num">16</span>], n =&gt; n &lt; <span class="num">10</span>)); <span class="com">// false</span>
+console.log(every([], n =&gt; n &lt; <span class="num">10</span>));         <span class="com">// true ← 没有反例</span></code></pre>
+<p>第二种写法用的就是德摩根律：<strong>"不是全都满足" ⟺ "存在一个不满足"</strong>，所以 <code>array.some(n =&gt; !test(n))</code> 为真就返回 false。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> every2(array, test) {
+  <span class="kw">return</span> !array.some(n =&gt; !test(n));   <span class="com">// 有一个不满足 → some 为 true → 取反就是 false</span>
+}
+console.log(every2([<span class="num">1</span>, <span class="num">3</span>, <span class="num">5</span>], n =&gt; n &lt; <span class="num">10</span>)); <span class="com">// true</span></code></pre>
+<h3 id="s14">2.10 week3/扁平化.js</h3>
+<p>知识点：<code>reduce</code> 累加器 + <code>concat</code> 拼接。两行就把二维拍平了。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> arr = [[<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>], [<span class="num">4</span>, <span class="num">5</span>], [<span class="num">6</span>]];
+<span class="kw">const</span> flat = arr.reduce((acc, cur) =&gt; acc.concat(cur), []);  <span class="com">// [] 是初始累加器</span>
+console.log(flat); <span class="com">// [1, 2, 3, 4, 5, 6]</span></code></pre>
+<p>拓展：只能拍一层；更深的用 <code>flat(Infinity)</code>。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="num">1</span>, [<span class="num">2</span>, [<span class="num">3</span>, [<span class="num">4</span>]]]].flat(<span class="kw">Infinity</span>)); <span class="com">// [1, 2, 3, 4]</span></code></pre>
+<h3 id="s15">2.11 week3/自己的循环.js</h3>
+<p>知识点：<strong>把"循环"拆成四件套再递归</strong> —— 初值、继续条件、下一步、循环体，四个都能是函数。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> loop(value, test, update, body) {
+  <span class="kw">if</span> (!test(value)) <span class="kw">return</span>;   <span class="com">// 条件不成立就停</span>
+  body(value);                <span class="com">// 做一次</span>
+  loop(update(value), test, update, body);  <span class="com">// 再拿新值重来</span>
+}
+loop(<span class="num">3</span>, n =&gt; n &gt; <span class="num">0</span>, n =&gt; n - <span class="num">1</span>, console.log); <span class="com">// 3 2 1</span></code></pre>
+<p>这其实就是 <code>for (let n = 3; n &gt; 0; n--) console.log(n)</code> 的函数式写法。</p>
+<h3 id="s16">2.12 week3/原型的一些应用.JS</h3>
+<p>知识点：<strong>构造函数 + prototype</strong> 共享方法、<code>new</code>、<code>this</code>、展开运算符做浅拷贝。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> GradeManager() {
+  <span class="kw">this</span>.students = [];
+}
+GradeManager.prototype.addStudent = <span class="kw">function</span> (s) {
+  <span class="kw">this</span>.students.push(s);          <span class="com">// this 指向 new 出来的实例</span>
+};
+GradeManager.prototype.getAll = <span class="kw">function</span> () {
+  <span class="kw">return</span> [...<span class="kw">this</span>.students];      <span class="com">// 展开 → 返回副本，外面 push 不影响内部</span>
+};
+<span class="kw">const</span> manager = <span class="kw">new</span> GradeManager();
+manager.addStudent({ name: <span class="str">'张三'</span>, math: <span class="num">100</span> });
+console.log(manager.getAll());    <span class="com">// [{ name: '张三', math: 100 }]</span></code></pre>
+<p>等价的 <code>class</code> 写法（现代写法，本质一样）：</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">class</span> GradeManager {
+  constructor() { <span class="kw">this</span>.students = []; }
+  addStudent(s) { <span class="kw">this</span>.students.push(s); }
+  getAll() { <span class="kw">return</span> [...<span class="kw">this</span>.students]; }
+}</code></pre>
+<h3 id="s17">2.13 week3/向量类型.js</h3>
+<p>知识点：<code>class</code>、构造器、方法返回<strong>新实例</strong>（不可变）、<code>get</code> 定义只读属性、<code>**</code> 幂运算、<code>Math.sqrt</code>。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">class</span> Vec {
+  constructor(x, y) { <span class="kw">this</span>.x = x; <span class="kw">this</span>.y = y; }
+  plus(v) { <span class="kw">return</span> <span class="kw">new</span> Vec(<span class="kw">this</span>.x + v.x, <span class="kw">this</span>.y + v.y); }  <span class="com">// 不改自己，返回新向量</span>
+  minus(v) { <span class="kw">return</span> <span class="kw">new</span> Vec(<span class="kw">this</span>.x - v.x, <span class="kw">this</span>.y - v.y); }
+  <span class="kw">get</span> length() {                                            <span class="com">// 用的时候不加括号</span>
+    <span class="kw">return</span> Math.sqrt(<span class="kw">this</span>.x ** <span class="num">2</span> + <span class="kw">this</span>.y ** <span class="num">2</span>);            <span class="com">// 3²+4² 开根号 = 5</span>
+  }
+}
+console.log(<span class="kw">new</span> Vec(<span class="num">3</span>, <span class="num">4</span>).length);          <span class="com">// 5</span>
+console.log(<span class="kw">new</span> Vec(<span class="num">1</span>, <span class="num">2</span>).plus(<span class="kw">new</span> Vec(<span class="num">2</span>, <span class="num">3</span>))); <span class="com">// Vec { x: 3, y: 5 }</span></code></pre>
+<p>拓展：加个 <code>toString</code> 打印会好看很多。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">class</span> Vec {
+  constructor(x, y) { <span class="kw">this</span>.x = x; <span class="kw">this</span>.y = y; }
+  toString() { <span class="kw">return</span> <span class="str">`(${this.x}, ${this.y})`</span>; }   <span class="com">// 打印 / 拼字符串时自动调用</span>
+}
+console.log(String(<span class="kw">new</span> Vec(<span class="num">1</span>, <span class="num">2</span>))); <span class="com">// (1, 2)</span></code></pre>
+<h3 id="s18">2.14 week3/力扣4/合并区间.js</h3>
+<p>知识点：二维数组按首元素排序、<code>const</code> 不保护内容。这个文件只写了排序，合并逻辑没写完。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> intervals = [[<span class="num">1</span>, <span class="num">3</span>], [<span class="num">9</span>, <span class="num">6</span>], [<span class="num">8</span>, <span class="num">10</span>], [<span class="num">15</span>, <span class="num">18</span>]];
+intervals.sort((a, b) =&gt; a[<span class="num">0</span>] - b[<span class="num">0</span>]);   <span class="com">// 按每项的起点排；sort 会改原数组</span>
+console.log(intervals); <span class="com">// [[1,3],[8,10],[9,6],[15,18]] ← [9,6] 只按 9 排过去了</span></code></pre>
+<p>完整解法见第 4 节。</p>
+<h3 id="s19">2.15 week3/力扣4/子数列最大值.js</h3>
+<p>知识点：<strong>Kadane 算法</strong>（最大子序和）—— 用一个"以当前元素结尾的最大和"滚动更新。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> maxSubArray(nums) {
+  <span class="kw">let</span> now = nums[<span class="num">0</span>];    <span class="com">// 以 i 结尾的最大和</span>
+  <span class="kw">let</span> best = nums[<span class="num">0</span>];   <span class="com">// 全局最大</span>
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i &lt; nums.length; i++) {
+    now = now &lt; <span class="num">0</span> ? nums[i] : now + nums[i];   <span class="com">// 前面是负的，不如从自己重新开始</span>
+    best = Math.max(now, best);
+  }
+  <span class="kw">return</span> best;
+}
+console.log(maxSubArray([-<span class="num">2</span>, <span class="num">1</span>, -<span class="num">3</span>, <span class="num">4</span>, -<span class="num">1</span>, <span class="num">2</span>, <span class="num">1</span>, -<span class="num">5</span>, <span class="num">4</span>])); <span class="com">// 6</span>
+console.log(maxSubArray([<span class="num">5</span>, <span class="num">4</span>, -<span class="num">1</span>, <span class="num">7</span>, <span class="num">8</span>]));                <span class="com">// 23</span></code></pre>
+<h3 id="s20">2.16 week3/力扣4/轮转数组.js</h3>
+<p>知识点：<code>unshift</code> + <code>pop</code> 组合实现"把最后一个搬到最前面"、循环 k 次、<code>nums.length - 1</code> 取末尾。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> nums = [-<span class="num">1</span>, -<span class="num">100</span>, <span class="num">3</span>, <span class="num">99</span>];
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; <span class="num">2</span>; i++) {
+  nums.unshift(nums[nums.length - <span class="num">1</span>]);  <span class="com">// 尾巴搬到头上</span>
+  nums.pop();                           <span class="com">// 再把多出来的尾巴删掉（pop 不接参数！）</span>
+}
+console.log(nums); <span class="com">// [3, 99, -1, -100]</span></code></pre>
+<p>更快的写法（一次 <code>splice</code> 切走尾巴再塞回头）：</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> rotate(nums, k) {
+  k %= nums.length;                                  <span class="com">// k 可能比长度大</span>
+  nums.unshift(...nums.splice(nums.length - k, k));   <span class="com">// 切下最后 k 个，塞到前面</span>
+  <span class="kw">return</span> nums;
+}</code></pre>
+<h3 id="s21">2.17 week3/力扣4/除自己外乘积.js</h3>
+<p>知识点：<code>new Array(n)</code> 建定长数组、双层循环、<code>continue</code> 跳过自己、乘积累乘。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> productExceptSelf(nums) {
+  <span class="kw">const</span> res = <span class="kw">new</span> Array(nums.length).fill(<span class="num">1</span>);
+  <span class="kw">let</span> left = <span class="num">1</span>;
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; nums.length; i++) {   <span class="com">// 第一遍：左边所有数的积</span>
+    res[i] = left;
+    left *= nums[i];
+  }
+  <span class="kw">let</span> right = <span class="num">1</span>;
+  <span class="kw">for</span> (<span class="kw">let</span> i = nums.length - <span class="num">1</span>; i &gt;= <span class="num">0</span>; i--) { <span class="com">// 第二遍：再乘上右边所有数的积</span>
+    res[i] *= right;
+    right *= nums[i];
+  }
+  <span class="kw">return</span> res;
+}
+console.log(productExceptSelf([-<span class="num">1</span>, <span class="num">1</span>, <span class="num">0</span>, -<span class="num">3</span>, <span class="num">3</span>])); <span class="com">// [0, 0, 9, 0, 0]</span></code></pre>
+<p>你的原版是每个位置都重新遍历一遍（O(n²)），而且结果里出现 <code>-0</code>（因为 <code>-1 * 0</code> 带符号位）。这个写法是 O(n)，也不用除法（题目要求）。</p>
+<h2 id="s22">3. 方法手册（含拓展）</h2>
+<h3 id="s23">3.1 数组的四个角：push / pop / unshift / shift</h3>
+<p>这四个最容易混：看<strong>改头还是改尾</strong>、<strong>加还是删</strong>、<strong>返回长度还是元素</strong>。</p>
+<div class="table-wrap"><table><thead><tr><th>方法</th><th>位置</th><th>操作</th><th>返回值</th><th>改原数组</th></tr></thead><tbody><tr><td><code>push(x)</code></td><td>尾部</td><td>加</td><td>新长度</td><td>是</td></tr><tr><td><code>pop()</code></td><td>尾部</td><td>删</td><td>被删的元素</td><td>是</td></tr><tr><td><code>unshift(x)</code></td><td>头部</td><td>加</td><td>新长度</td><td>是</td></tr><tr><td><code>shift()</code></td><td>头部</td><td>删</td><td>被删的元素</td><td>是</td></tr></tbody></table></div>
+<p><strong><code>push(值1, 值2, ...)</code></strong> — 往数组尾巴追加元素，返回加完之后的长度。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>];
+a.push(<span class="num">3</span>);        <span class="com">// 3  ← 返回的是长度，不是数组</span>
+console.log(a);   <span class="com">// [1, 2, 3]</span>
+console.log(a.push(<span class="num">4</span>, <span class="num">5</span>)); <span class="com">// 5 ← 一次可以加多个</span></code></pre>
+<p><strong><code>pop()</code></strong> — 从尾巴取走一个，返回取走的那个；空数组返回 <code>undefined</code>。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+<span class="kw">const</span> last = a.pop();   <span class="com">// 3</span>
+console.log(a);         <span class="com">// [1, 2]</span>
+console.log([].pop());  <span class="com">// undefined ← 不会报错</span></code></pre>
+<p><strong><code>unshift(值)</code></strong> — 往头部塞，返回新长度。你反转数组用的就是它。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>];
+a.unshift(<span class="num">0</span>);     <span class="com">// 3</span>
+console.log(a);   <span class="com">// [0, 1, 2]</span></code></pre>
+<p><strong><code>shift()</code></strong> — 从头部取走一个，返回取走的那个。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+console.log(a.shift()); <span class="com">// 1</span>
+console.log(a);         <span class="com">// [2, 3]</span></code></pre>
+<p><strong>用它们做栈 / 队列</strong> — 记住一句：栈用 <code>push + pop</code>，队列用 <code>push + shift</code>。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> stack = [];
+stack.push(<span class="num">1</span>); stack.push(<span class="num">2</span>);
+console.log(stack.pop());   <span class="com">// 2 ← 后进先出</span>
+
+<span class="kw">const</span> queue = [];
+queue.push(<span class="num">1</span>); queue.push(<span class="num">2</span>);
+console.log(queue.shift()); <span class="com">// 1 ← 先进先出</span></code></pre>
+<p>性能提醒：<code>push/pop</code> 只动尾巴，很快；<code>unshift/shift</code> 要把后面所有元素整体挪一位，数组大时慢。</p>
+<h3 id="s24">3.2 任意位置增删：splice / slice</h3>
+<p><strong><code>splice(起点, 删除个数, ...要插入的东西)</code></strong> — 在任意位置挖掉 / 塞入，返回被挖掉的部分，原数组被改。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>];
+console.log(a.splice(<span class="num">1</span>, <span class="num">2</span>, <span class="str">'x'</span>)); <span class="com">// [2, 3] ← 被删掉的部分</span>
+console.log(a);                   <span class="com">// [1, 'x', 4]</span>
+
+<span class="kw">const</span> b = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+b.splice(<span class="num">1</span>, <span class="num">0</span>, <span class="str">'new'</span>);            <span class="com">// 删除 0 个 = 纯插入</span>
+console.log(b);                   <span class="com">// [1, 'new', 2, 3]</span></code></pre>
+<p><strong><code>slice(起点, 终点)</code></strong> — 复印一段（含起点、不含终点），原数组不动。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>];
+console.log(a.slice(<span class="num">1</span>, <span class="num">3</span>)); <span class="com">// [2, 3]</span>
+console.log(a);             <span class="com">// [1, 2, 3, 4] ← 没变</span>
+console.log(a.slice());     <span class="com">// [1, 2, 3, 4] ← 空参 = 整个复制</span></code></pre>
+<p>一句记忆：<strong>splice 是剪刀（改原数组），slice 是复印机（不改）</strong>。</p>
+<h3 id="s25">3.3 拼接、拍平、转字符串：concat / flat / join / Array.from</h3>
+<p><strong><code>concat(...)</code></strong> — 把东西接在屁股后面，返回新数组（不会拍平二维）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="num">1</span>, <span class="num">2</span>].concat([<span class="num">3</span>], <span class="num">4</span>));     <span class="com">// [1, 2, 3, 4]</span>
+console.log([<span class="num">1</span>].concat([[<span class="num">2</span>, <span class="num">3</span>]]));      <span class="com">// [1, [2, 3]] ← 只是接上去</span></code></pre>
+<p><strong><code>flat(层数)</code></strong> — 把嵌套数组压平，默认只压 1 层。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([[<span class="num">1</span>, [<span class="num">2</span>]], [<span class="num">3</span>]].flat());             <span class="com">// [1, [2], 3]</span>
+console.log([<span class="num">1</span>, [<span class="num">2</span>, [<span class="num">3</span>, [<span class="num">4</span>]]]].flat(<span class="kw">Infinity</span>));  <span class="com">// [1, 2, 3, 4]</span></code></pre>
+<p><strong><code>join(分隔符)</code></strong> — 把数组拼成一个字符串。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>].join(<span class="str">'-'</span>)); <span class="com">// "1-2-3"</span>
+console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>].join(<span class="str">''</span>));  <span class="com">// "123"</span></code></pre>
+<p><strong><code>Array.from({ length: n }, 回调)</code></strong> — 造一个长度 n 的满数组（比 <code>new Array</code> 好用，因为没有空位）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Array.from({ length: <span class="num">3</span> }, (_, i) =&gt; i)); <span class="com">// [0, 1, 2]</span>
+console.log(Array.from(<span class="str">'abc'</span>));                     <span class="com">// ['a', 'b', 'c'] ← 字符串也能转</span></code></pre>
+<h3 id="s26">3.4 查找与判断：includes / indexOf / find / findIndex / some / every</h3>
+<p><strong><code>includes(值)</code></strong> — 数组里有没有这个值，返回 true/false；<code>NaN</code> 也能正确找到。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>].includes(<span class="num">2</span>));       <span class="com">// true</span>
+console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="kw">NaN</span>].includes(<span class="kw">NaN</span>));   <span class="com">// true</span></code></pre>
+<p><strong><code>indexOf(值)</code></strong> — 第一次出现的下标，找不到返回 -1；<code>NaN</code> 永远找不到。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="str">'a'</span>, <span class="str">'b'</span>].indexOf(<span class="str">'b'</span>)); <span class="com">// 1</span>
+console.log([<span class="str">'a'</span>].indexOf(<span class="str">'z'</span>));      <span class="com">// -1</span>
+console.log([<span class="num">1</span>, <span class="kw">NaN</span>].indexOf(<span class="kw">NaN</span>));   <span class="com">// -1 ← 这是它和 includes 最大的差别</span></code></pre>
+<p><strong><code>find(条件)</code></strong> — 找第一个满足条件的元素本身，没有就 <code>undefined</code>。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> users = [{ id: <span class="num">1</span> }, { id: <span class="num">2</span> }];
+console.log(users.find(u =&gt; u.id === <span class="num">2</span>)); <span class="com">// { id: 2 }</span>
+console.log(users.find(u =&gt; u.id === <span class="num">9</span>)); <span class="com">// undefined</span></code></pre>
+<p><strong><code>findIndex(条件)</code></strong> — 同上，但返回下标，没有就 -1。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> users = [{ id: <span class="num">1</span> }, { id: <span class="num">2</span> }];
+console.log(users.findIndex(u =&gt; u.id === <span class="num">2</span>)); <span class="com">// 1</span></code></pre>
+<p><strong><code>some(条件)</code></strong> — 只要有一个满足就 true（空数组返回 false）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>].some(x =&gt; x &gt; <span class="num">2</span>)); <span class="com">// true</span>
+console.log([].some(x =&gt; x &gt; <span class="num">2</span>));        <span class="com">// false</span></code></pre>
+<p><strong><code>every(条件)</code></strong> — 全部满足才 true（空数组返回 true —— 这就是你 <code>every</code> 里空数组返回 true 的原因）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>].every(x =&gt; x &gt; <span class="num">0</span>)); <span class="com">// true</span>
+console.log([].every(x =&gt; x &gt; <span class="num">0</span>));        <span class="com">// true ← 空数组"没有反例"</span></code></pre>
+<p>你手写的 <code>every</code> 就是原生 <code>Array.prototype.every</code> 的原理，实际项目里直接 <code>array.every(test)</code> 就够了。</p>
+<h3 id="s27">3.5 遍历与变换：for...of / forEach / map / filter / reduce</h3>
+<p><strong><code>for...of</code></strong> — 直接拿到每个值，能 <code>break</code>、能 <code>continue</code>。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">for</span> (<span class="kw">const</span> x <span class="kw">of</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]) {
+  <span class="kw">if</span> (x === <span class="num">2</span>) <span class="kw">continue</span>;
+  console.log(x);   <span class="com">// 1 3</span>
+}</code></pre>
+<p><strong><code>forEach(回调)</code></strong> — 只是遍历，没有返回值（返回 undefined），也<strong>不能</strong> <code>break</code>。</p>
+<pre class="code" data-lang="js"><code class="language-js">[<span class="num">1</span>, <span class="num">2</span>].forEach((x, i) =&gt; console.log(i, x)); <span class="com">// 0 1 / 1 2</span></code></pre>
+<p><strong><code>map(回调)</code></strong> — 每个元素变出一个新值，返回等长新数组。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>].map(x =&gt; x * <span class="num">2</span>));        <span class="com">// [2, 4, 6]</span>
+console.log([{ n: <span class="num">1</span> }].map(o =&gt; o.n));         <span class="com">// [1] ← 常用：只取字段</span></code></pre>
+<p><strong><code>filter(回调)</code></strong> — 只留下回调返回 true 的元素，返回新数组（不改原数组，你 Group.delete 用的就是它）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>].filter(x =&gt; x % <span class="num">2</span> === <span class="num">0</span>)); <span class="com">// [2, 4]</span></code></pre>
+<p><strong><code>reduce(回调, 初始值)</code></strong> — 把整个数组压成一个值（求和、求积、拍平、分组都靠它）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>].reduce((sum, x) =&gt; sum + x, <span class="num">0</span>)); <span class="com">// 6</span>
+console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>].reduce((p, x) =&gt; p * x, <span class="num">1</span>));  <span class="com">// 24</span></code></pre>
+<p><strong><code>reduce</code> 拍平</strong>（你扁平化.js 的写法）：</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([[<span class="num">1</span>, <span class="num">2</span>], [<span class="num">3</span>]].reduce((acc, cur) =&gt; acc.concat(cur), [])); <span class="com">// [1, 2, 3]</span></code></pre>
+<p><strong><code>continue</code> / <code>break</code></strong> — 跳过本次 / 跳出整个循环（用在 for、for...of、while 里）。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; <span class="num">5</span>; i++) {
+  <span class="kw">if</span> (i === <span class="num">2</span>) <span class="kw">continue</span>;  <span class="com">// 跳过 2</span>
+  <span class="kw">if</span> (i === <span class="num">4</span>) <span class="kw">break</span>;     <span class="com">// 到 4 就停</span>
+  console.log(i);         <span class="com">// 0 1 3</span>
+}</code></pre>
+<h3 id="s28">3.6 排序与反转：sort / reverse / toSorted / at</h3>
+<p><strong><code>sort(比较器)</code></strong> — 原地排序；不传比较器时按<strong>字符串</strong>排，所以数字必须传 <code>(a, b) =&gt; a - b</code>。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="num">10</span>, <span class="num">3</span>, <span class="num">1</span>].sort());                <span class="com">// [1, 10, 3] ← "10" &lt; "3"</span>
+console.log([<span class="num">10</span>, <span class="num">3</span>, <span class="num">1</span>].sort((a, b) =&gt; a - b));   <span class="com">// [1, 3, 10] 升序</span>
+console.log([<span class="num">10</span>, <span class="num">3</span>, <span class="num">1</span>].sort((a, b) =&gt; b - a));   <span class="com">// [10, 3, 1] 降序</span></code></pre>
+<p><strong>比较器的含义</strong>：返回负数 → <code>a</code> 排前面；返回正数 → <code>b</code> 排前面；返回 0 → 保持不动。</p>
+<pre class="code" data-lang="js"><code class="language-js">[<span class="num">3</span>, <span class="num">1</span>, <span class="num">2</span>].sort((a, b) =&gt; a - b);   <span class="com">// 就是"a 比 b 小就 a 在前"</span></code></pre>
+<p><strong>二维数组排序</strong>（合并区间用的）：</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> iv = [[<span class="num">9</span>, <span class="num">6</span>], [<span class="num">1</span>, <span class="num">3</span>], [<span class="num">8</span>, <span class="num">10</span>]];
+iv.sort((a, b) =&gt; a[<span class="num">0</span>] - b[<span class="num">0</span>]);   <span class="com">// 按每项的第 0 个元素排</span>
+console.log(iv); <span class="com">// [[1, 3], [8, 10], [9, 6]]</span></code></pre>
+<p><strong><code>reverse()</code></strong> — 原地反转，返回原数组（原数组被改）。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+a.reverse();
+console.log(a); <span class="com">// [3, 2, 1]</span></code></pre>
+<p><strong><code>toSorted()</code> / <code>toReversed()</code></strong> — 新版方法，返回新数组、不动原数组（Node 20+、现代浏览器）。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> a = [<span class="num">3</span>, <span class="num">1</span>, <span class="num">2</span>];
+console.log(a.toSorted()); <span class="com">// [1, 2, 3]</span>
+console.log(a);            <span class="com">// [3, 1, 2] ← 没被改</span></code></pre>
+<p><strong><code>at(下标)</code></strong> — 支持负数，取倒数第几个，比 <code>a[a.length - 1]</code> 短。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>].at(-<span class="num">1</span>)); <span class="com">// 3</span>
+console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>].at(<span class="num">0</span>));  <span class="com">// 1</span></code></pre>
+<h3 id="s29">3.7 数组的其它常识</h3>
+<p><strong><code>Array.isArray(x)</code></strong> — 判断是不是数组（<code>typeof []</code> 是 <code>'object'</code>，判断不了）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Array.isArray([]));   <span class="com">// true</span>
+console.log(Array.isArray(<span class="str">'[]'</span>)); <span class="com">// false</span></code></pre>
+<p><strong><code>new Array(n)</code></strong> — 造长度为 n 的「空位」数组，注意空位不参与 <code>map</code>。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> a = <span class="kw">new</span> Array(<span class="num">3</span>);
+console.log(a.length);      <span class="com">// 3</span>
+console.log(a.map(x =&gt; <span class="num">1</span>)); <span class="com">// [ &lt;3 empty items&gt; ] ← 回调根本没执行</span>
+console.log(a.fill(<span class="num">0</span>));     <span class="com">// [0, 0, 0] ← 先 fill 再 map 就没坑</span></code></pre>
+<p><strong><code>fill(值)</code></strong> — 用同一个值填满（原地改）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>].fill(<span class="num">0</span>)); <span class="com">// [0, 0, 0]</span>
+console.log(<span class="kw">new</span> Array(<span class="num">3</span>).fill(<span class="num">0</span>)); <span class="com">// [0, 0, 0] ← 初始化数组常用</span></code></pre>
+<p><strong>展开运算符 <code>...</code></strong> — 把数组拆成一个个元素（做浅拷贝、传参数）。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>];
+console.log([...a, <span class="num">3</span>]);         <span class="com">// [1, 2, 3]</span>
+console.log(Math.max(...a));    <span class="com">// 2</span></code></pre>
+<p><strong><code>length</code></strong> — 数组长度，可读<strong>也可写</strong>。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+console.log(a.length); <span class="com">// 3</span>
+a.length = <span class="num">1</span>;          <span class="com">// 直接改长度 → 后面的元素被丢掉</span>
+console.log(a);        <span class="com">// [1]</span></code></pre>
+<h3 id="s30">3.8 字符串</h3>
+<p><strong><code>str.length</code></strong> — 字符个数（按 UTF-16 码元算，所以一个 emoji 可能算 2 个）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="str">'abc'</span>.length); <span class="com">// 3</span></code></pre>
+<p><strong><code>str[i]</code> / <code>charAt(i)</code> / <code>at(i)</code></strong> — 取第 i 个字符。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="str">'abc'</span>[<span class="num">1</span>]);      <span class="com">// "b"</span>
+console.log(<span class="str">'abc'</span>.charAt(<span class="num">1</span>)); <span class="com">// "b"</span>
+console.log(<span class="str">'abc'</span>.at(-<span class="num">1</span>));  <span class="com">// "c" ← 支持负数</span></code></pre>
+<p><strong><code>split(分隔符)</code></strong> — 把字符串切成数组（<code>join</code> 的逆操作）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="str">'a,b,c'</span>.split(<span class="str">','</span>)); <span class="com">// ["a", "b", "c"]</span>
+console.log(<span class="str">'abc'</span>.split(<span class="str">''</span>));    <span class="com">// ["a", "b", "c"]</span></code></pre>
+<p><strong><code>repeat(n)</code></strong> — 重复 n 遍。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="str">'ab'</span>.repeat(<span class="num">2</span>)); <span class="com">// "abab"</span>
+console.log(<span class="str">'-'</span>.repeat(<span class="num">10</span>)); <span class="com">// "----------" ← 画分隔线</span></code></pre>
+<p><strong><code>padStart(总长, 填充字符)</code></strong> — 不够长就在前面补（<code>padEnd</code> 在后面补）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="str">'1'</span>.padStart(<span class="num">3</span>, <span class="str">'0'</span>)); <span class="com">// "001"</span>
+console.log(<span class="str">'1'</span>.padEnd(<span class="num">3</span>, <span class="str">'0'</span>));   <span class="com">// "100"</span></code></pre>
+<p><strong><code>trim()</code></strong> — 去掉首尾空格。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="str">'  x  '</span>.trim()); <span class="com">// "x"</span></code></pre>
+<p><strong><code>toUpperCase()</code> / <code>toLowerCase()</code></strong> — 转大写 / 小写。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="str">'abc'</span>.toUpperCase()); <span class="com">// "ABC"</span></code></pre>
+<p><strong><code>includes</code> / <code>startsWith</code> / <code>endsWith</code></strong> — 包含 / 以…开头 / 以…结尾。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="str">'hello'</span>.includes(<span class="str">'ell'</span>));  <span class="com">// true</span>
+console.log(<span class="str">'hello'</span>.startsWith(<span class="str">'he'</span>)); <span class="com">// true</span></code></pre>
+<p><strong>模板字符串</strong> — 用反引号，<code>${}</code> 里可以放表达式。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> name = <span class="str">'小明'</span>, age = <span class="num">18</span>;
+console.log(<span class="str">`我叫${name}，今年${age}岁，明年${age + 1}岁`</span>);</code></pre>
+<p><strong>字符串 ↔ 数字</strong> — <code>Number()</code> 严格、<code>parseInt()</code> 宽容。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Number(<span class="str">'12'</span>));      <span class="com">// 12</span>
+console.log(Number(<span class="str">'12px'</span>));    <span class="com">// NaN ← 有一个字符不对就整个 NaN</span>
+console.log(parseInt(<span class="str">'12px'</span>));  <span class="com">// 12  ← 能读多少读多少</span>
+console.log(String(<span class="num">12</span>) + <span class="str">'px'</span>); <span class="com">// "12px"</span></code></pre>
+<h3 id="s31">3.9 Object：keys / values / entries / in / hasOwn / delete</h3>
+<p><strong><code>Object.keys(obj)</code></strong> — 返回所有<strong>可枚举自身属性名</strong>组成的数组（你深比较就靠它）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Object.keys({ a: <span class="num">1</span>, b: <span class="num">2</span> })); <span class="com">// ["a", "b"]</span>
+console.log(Object.keys([<span class="num">10</span>, <span class="num">20</span>]));       <span class="com">// ["0", "1"] ← 数组下标是字符串</span></code></pre>
+<p><strong><code>Object.values(obj)</code></strong> — 只要值。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Object.values({ a: <span class="num">1</span>, b: <span class="num">2</span> })); <span class="com">// [1, 2]</span></code></pre>
+<p><strong><code>Object.entries(obj)</code></strong> — 变成 <code>[键, 值]</code> 的数组，配合解构遍历。</p>
+<pre class="code" data-lang="js"><code class="language-js">Object.entries({ a: <span class="num">1</span>, b: <span class="num">2</span> }).forEach(([k, v]) =&gt; console.log(k, v)); <span class="com">// a 1 / b 2</span></code></pre>
+<p><strong><code>"key" in obj</code></strong> — 属性存不存在（<strong>包括原型链上的</strong>）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="str">'toString'</span> <span class="kw">in</span> {}); <span class="com">// true ← 继承来的也算</span></code></pre>
+<p><strong><code>Object.hasOwn(obj, "key")</code></strong> — 只看<strong>自己</strong>的属性，不受原型链影响。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Object.hasOwn({ a: <span class="num">1</span> }, <span class="str">'a'</span>));      <span class="com">// true</span>
+console.log(Object.hasOwn({}, <span class="str">'toString'</span>));     <span class="com">// false</span></code></pre>
+<p><strong><code>delete obj.key</code></strong> — 删掉一个属性，返回 true/false。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> o = { a: <span class="num">1</span>, b: <span class="num">2</span> };
+<span class="kw">delete</span> o.a;
+console.log(o); <span class="com">// { b: 2 }</span></code></pre>
+<p>注意：<code>delete</code> 是运算符，不能给变量用；你 Group 里那个 <code>delete</code> 是<strong>方法名</strong>，同名不冲突。</p>
+<p><strong>展开 <code>{...obj}</code></strong> — 浅拷贝 / 合并。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> base = { a: <span class="num">1</span> };
+console.log({ ...base, b: <span class="num">2</span> });   <span class="com">// { a: 1, b: 2 }</span></code></pre>
+<p><strong>对象解构</strong> — 把属性直接取成变量。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> user = { name: <span class="str">'张三'</span>, age: <span class="num">18</span> };
+<span class="kw">const</span> { name, age } = user;
+<span class="kw">const</span> { name: n, ...rest } = user;  <span class="com">// 重命名 + 剩下的打包</span>
+console.log(n, rest); <span class="com">// 张三 { age: 18 }</span></code></pre>
+<p><strong><code>for...in</code></strong> — 遍历键（会带上原型链上的可枚举属性，所以一般配 <code>hasOwn</code> 用）。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">for</span> (<span class="kw">const</span> k <span class="kw">in</span> { a: <span class="num">1</span>, b: <span class="num">2</span> }) console.log(k); <span class="com">// a b</span></code></pre>
+<h3 id="s32">3.10 Math 与数字</h3>
+<p><strong><code>Math.max(...)</code> / <code>Math.min(...)</code></strong> — 求最大 / 最小；接受多个参数，不吃数组。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Math.max(<span class="num">1</span>, <span class="num">5</span>, <span class="num">2</span>));         <span class="com">// 5</span>
+console.log(Math.max(...[<span class="num">1</span>, <span class="num">5</span>, <span class="num">2</span>]));    <span class="com">// 5</span>
+console.log(Math.max());                <span class="com">// -Infinity ← 空参的默认值</span></code></pre>
+<p><strong><code>Math.floor</code> / <code>Math.ceil</code> / <code>Math.round</code></strong> — 向下取整 / 向上取整 / 四舍五入。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Math.floor(<span class="num">4.7</span>)); <span class="com">// 4</span>
+console.log(Math.ceil(<span class="num">4.1</span>));  <span class="com">// 5</span>
+console.log(Math.round(<span class="num">4.5</span>)); <span class="com">// 5</span></code></pre>
+<p><strong><code>Math.abs(x)</code></strong> — 绝对值。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Math.abs(-<span class="num">4</span>)); <span class="com">// 4</span></code></pre>
+<p><strong><code>Math.sqrt(x)</code> / <code>2 ** 3</code></strong> — 开平方 / 幂。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Math.sqrt(<span class="num">3</span> ** <span class="num">2</span> + <span class="num">4</span> ** <span class="num">2</span>)); <span class="com">// 5</span></code></pre>
+<p><strong><code>Math.random()</code></strong> — 0 到 1 之间的小数（含 0、不含 1）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Math.floor(Math.random() * <span class="num">10</span>) + <span class="num">1</span>); <span class="com">// 1~10 的整数</span></code></pre>
+<h3 id="s33">3.11 类型与比较：=== / == / typeof / NaN</h3>
+<p><strong><code>===</code>（严格相等）</strong> — 类型和值都要一样，日常一律用它。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="num">1</span> === <span class="str">'1'</span>);  <span class="com">// false</span>
+console.log(<span class="num">1</span> == <span class="str">'1'</span>);   <span class="com">// true ← == 会先转类型，容易出事</span></code></pre>
+<p><strong><code>==</code> 的几个坑</strong>：</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="num">0</span> == <span class="str">''</span>);             <span class="com">// true</span>
+console.log(<span class="kw">null</span> == <span class="kw">undefined</span>);   <span class="com">// true</span>
+console.log([] == <span class="kw">false</span>);         <span class="com">// true</span>
+console.log(<span class="kw">NaN</span> == <span class="kw">NaN</span>);          <span class="com">// false ← NaN 和谁都不等</span></code></pre>
+<p><strong><code>typeof</code></strong> — 看类型，但 <code>null</code> 会返回 <code>'object'</code>（历史遗留 bug）。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="kw">typeof</span> <span class="num">1</span>, <span class="kw">typeof</span> <span class="str">'a'</span>, <span class="kw">typeof</span> <span class="kw">true</span>, <span class="kw">typeof</span> <span class="kw">undefined</span>); <span class="com">// number string boolean undefined</span>
+console.log(<span class="kw">typeof</span> <span class="kw">null</span>);   <span class="com">// "object"</span>
+console.log(<span class="kw">typeof</span> []);     <span class="com">// "object" ← 所以判断数组要用 Array.isArray</span>
+console.log(<span class="kw">typeof</span> <span class="kw">function</span> () {}); <span class="com">// "function"</span></code></pre>
+<p><strong><code>NaN</code></strong> — 不是数字的"数字"，用 <code>Number.isNaN</code> 判断。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(Number.isNaN(<span class="kw">NaN</span>));      <span class="com">// true</span>
+console.log(Number.isNaN(<span class="str">'abc'</span>));    <span class="com">// false ← 它不做类型转换</span></code></pre>
+<p><strong>浮点数</strong> — 小数运算有精度误差，比较时用差值。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(<span class="num">0.1</span> + <span class="num">0.2</span>);              <span class="com">// 0.30000000000000004</span>
+console.log(<span class="num">0.1</span> + <span class="num">0.2</span> === <span class="num">0.3</span>);      <span class="com">// false</span>
+console.log(Math.abs(<span class="num">0.1</span> + <span class="num">0.2</span> - <span class="num">0.3</span>) &lt; 1e-<span class="num">9</span>); <span class="com">// true ← 这样比</span></code></pre>
+<h3 id="s34">3.12 函数：声明 / 表达式 / 箭头 / 默认参数 / 剩余参数</h3>
+<p><strong>函数声明</strong> — 会"提升"，写在调用后面也能用。</p>
+<pre class="code" data-lang="js"><code class="language-js">console.log(add(<span class="num">1</span>, <span class="num">2</span>)); <span class="com">// 3 ← 提前调用也 OK</span>
+<span class="kw">function</span> add(a, b) { <span class="kw">return</span> a + b; }</code></pre>
+<p><strong>函数表达式</strong> — 赋给变量，不会提升。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> add2 = <span class="kw">function</span> (a, b) { <span class="kw">return</span> a + b; };</code></pre>
+<p><strong>箭头函数</strong> — 更短的写法；没有自己的 <code>this</code> 和 <code>arguments</code>，不能当构造函数。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> double = x =&gt; x * <span class="num">2</span>;              <span class="com">// 一个参数可省括号，单表达式可省 return</span>
+<span class="kw">const</span> add3 = (a, b) =&gt; { <span class="kw">return</span> a + b; };
+console.log(double(<span class="num">3</span>)); <span class="com">// 6</span></code></pre>
+<p><strong>默认参数</strong> — 没传（或传 <code>undefined</code>）时才用默认值。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> greet(name = <span class="str">'陌生人'</span>) { <span class="kw">return</span> <span class="str">'hi '</span> + name; }
+console.log(greet());        <span class="com">// hi 陌生人</span>
+console.log(greet(<span class="str">'小明'</span>));   <span class="com">// hi 小明</span></code></pre>
+<p><strong>剩余参数 <code>...args</code></strong> — 把多出来的参数收成数组（比 <code>arguments</code> 好用，<code>arguments</code> 是类数组）。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> sumAll(...nums) {
+  <span class="kw">return</span> nums.reduce((a, b) =&gt; a + b, <span class="num">0</span>);
+}
+console.log(sumAll(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>)); <span class="com">// 6</span></code></pre>
+<p><strong>回调函数</strong> — 把函数当参数传进去，让别的函数"在合适的时候调用它"。</p>
+<pre class="code" data-lang="js"><code class="language-js">[<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>].forEach(x =&gt; console.log(x));  <span class="com">// 箭头函数就是回调</span>
+setTimeout(() =&gt; console.log(<span class="str">'1 秒后'</span>), <span class="num">1000</span>);</code></pre>
+<p><strong><code>return</code> 与 <code>undefined</code></strong> — 函数没写 <code>return</code> 就返回 <code>undefined</code>；<code>return</code> 之后的代码不执行。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> noReturn() { <span class="kw">const</span> x = <span class="num">1</span>; }
+console.log(noReturn()); <span class="com">// undefined</span>
+<span class="kw">function</span> early(n) {
+  <span class="kw">if</span> (n &lt; <span class="num">0</span>) <span class="kw">return</span> <span class="str">'负数'</span>;
+  <span class="kw">return</span> n;              <span class="com">// 这行不会在 n &lt; 0 时执行</span>
+}</code></pre>
+<h3 id="s35">3.13 作用域与闭包</h3>
+<p><strong><code>let</code> / <code>const</code> / <code>var</code></strong> — <code>let</code>/<code>const</code> 是块级作用域（<code>{}</code> 内有效），<code>var</code> 是函数级；<code>const</code> 只保证"不能重新赋值"，对象内容照样能改。</p>
+<pre class="code" data-lang="js"><code class="language-js">{
+  <span class="kw">let</span> a = <span class="num">1</span>;
+  <span class="kw">var</span> b = <span class="num">2</span>;
+}
+<span class="com">// console.log(a); // 报错：a 只在块里</span>
+console.log(b);    <span class="com">// 2 ← var 漏出来了</span></code></pre>
+<p><strong>隐式全局变量</strong> — 非严格模式下，给没声明的变量赋值会<strong>偷偷创建全局变量</strong>（你 <code>range</code> 里的 <code>result</code> 就是）。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> bad() { total = <span class="num">0</span>; }   <span class="com">// 没有 let/const → 偷偷建了全局变量</span>
+bad();
+console.log(globalThis.total);  <span class="com">// 0</span></code></pre>
+<p><strong>严格模式</strong> — 加了 <code>'use strict'</code> 之后，上面这种写法直接报错；<code>class</code> 内部、ES module 默认就是严格模式。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="str">'use strict'</span>;
+<span class="com">// result = [];  // ReferenceError: result is not defined</span></code></pre>
+<p><strong>闭包</strong> — 内层函数记住了外层函数的变量，外层执行完变量也不消失。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> counter() {
+  <span class="kw">let</span> n = <span class="num">0</span>;
+  <span class="kw">return</span> () =&gt; ++n;   <span class="com">// 这个箭头函数"抱着" n 不放</span>
+}
+<span class="kw">const</span> c = counter();
+console.log(c()); <span class="com">// 1</span>
+console.log(c()); <span class="com">// 2</span></code></pre>
+<p>你 <code>列表.js</code> 里嵌套的 <code>shuxing()</code> 能直接用外层 <code>x</code>、<code>y</code>、<code>a</code>、<code>b</code>，也是作用域链的作用。</p>
+<h3 id="s36">3.14 对象、new、原型、class、getter</h3>
+<p><strong><code>new</code> 做了四件事</strong> — 建空对象 → 把原型指向构造函数的 <code>prototype</code> → 用 <code>this</code> 执行构造函数 → 返回这个对象。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> Person(name) { <span class="kw">this</span>.name = name; }
+<span class="kw">const</span> p = <span class="kw">new</span> Person(<span class="str">'张三'</span>);
+console.log(p.name);              <span class="com">// 张三</span>
+console.log(p <span class="kw">instanceof</span> Person); <span class="com">// true ← 原型链上有 Person.prototype</span></code></pre>
+<p><strong><code>prototype</code></strong> — 放在原型上的方法<strong>所有实例共享一份</strong>，省内存。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> Person(name) { <span class="kw">this</span>.name = name; }
+Person.prototype.say = <span class="kw">function</span> () { <span class="kw">return</span> <span class="str">'我是'</span> + <span class="kw">this</span>.name; };
+console.log(<span class="kw">new</span> Person(<span class="str">'张三'</span>).say());  <span class="com">// 我是张三 ← 实例上找不到 say，就去原型上找</span></code></pre>
+<p><strong><code>class</code></strong> — 就是"构造函数 + 原型"的语法糖，写着更像 Java。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">class</span> Animal {
+  constructor(name) { <span class="kw">this</span>.name = name; }
+  speak() { <span class="kw">return</span> <span class="kw">this</span>.name + <span class="str">' 叫了一声'</span>; }
+}
+console.log(<span class="kw">new</span> Animal(<span class="str">'猫'</span>).speak()); <span class="com">// 猫 叫了一声</span></code></pre>
+<p><strong><code>this</code> 指向</strong> — 谁调用方法，<code>this</code> 就是谁；箭头函数没有自己的 <code>this</code>（沿用外层的）。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> obj = {
+  n: <span class="num">1</span>,
+  normal() { <span class="kw">return</span> <span class="kw">this</span>.n; },   <span class="com">// this = obj</span>
+  arrow: () =&gt; <span class="kw">this</span>,             <span class="com">// 箭头函数的 this 是外层的，不是 obj</span>
+};
+console.log(obj.normal()); <span class="com">// 1</span></code></pre>
+<p><strong>getter</strong> — 用 <code>get</code> 定义"看起来像属性、其实是算出来的"值，访问时<strong>不加括号</strong>。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">class</span> Circle {
+  constructor(r) { <span class="kw">this</span>.r = r; }
+  <span class="kw">get</span> area() { <span class="kw">return</span> <span class="num">3.14</span> * <span class="kw">this</span>.r ** <span class="num">2</span>; }
+}
+<span class="kw">const</span> c1 = <span class="kw">new</span> Circle(<span class="num">2</span>);
+console.log(c1.area);    <span class="com">// 12.56</span>
+<span class="com">// console.log(c1.area()); // 报错：不是函数</span></code></pre>
+<h3 id="s37">3.15 递归</h3>
+<p><strong>递归</strong> — 函数调用自己，必须有<strong>终止条件</strong>，否则栈溢出。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> fact(n) {
+  <span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> <span class="num">1</span>;   <span class="com">// 终止条件</span>
+  <span class="kw">return</span> n * fact(n - <span class="num">1</span>); <span class="com">// 缩小规模 + 调用自己</span>
+}
+console.log(fact(<span class="num">5</span>)); <span class="com">// 120</span></code></pre>
+<p><strong>栈溢出</strong> — 每次调用占一层栈，约一万层就爆。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> infinite(n) { <span class="kw">return</span> infinite(n + <span class="num">1</span>); }
+<span class="com">// infinite(0); // RangeError: Maximum call stack size exceeded</span></code></pre>
+<h3 id="s38">3.16 Set / Map（你那个 Group 的"正规"写法）</h3>
+<p><strong><code>Set</code></strong> — 不重复的集合，接口正好是 <code>add / has / delete / size</code>，和你写的 <code>Group</code> 一模一样。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> s = <span class="kw">new</span> Set();
+s.add(<span class="num">1</span>);
+s.add(<span class="num">1</span>);              <span class="com">// 重复加没用</span>
+console.log(s.has(<span class="num">1</span>)); <span class="com">// true</span>
+console.log(s.size);   <span class="com">// 1</span>
+s.<span class="kw">delete</span>(<span class="num">1</span>);
+console.log(s.size);   <span class="com">// 0</span>
+
+console.log([...<span class="kw">new</span> Set([<span class="num">1</span>, <span class="num">1</span>, <span class="num">2</span>])]); <span class="com">// [1, 2] ← 一行去重</span></code></pre>
+<p><strong><code>Map</code></strong> — 键值对，键可以是任何类型（普通对象只认字符串键）。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> m = <span class="kw">new</span> Map();
+m.set(<span class="str">'a'</span>, <span class="num">1</span>);
+m.set(<span class="num">1</span>, <span class="str">'数字键'</span>);
+console.log(m.<span class="kw">get</span>(<span class="str">'a'</span>), m.<span class="kw">get</span>(<span class="num">1</span>), m.size); <span class="com">// 1 数字键 2</span></code></pre>
+<h2 id="s39">4. 算法知识点</h2>
+<p><strong>双指针原地反转</strong> — 一头一尾往中间走，边走边换。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> reverse(a) {
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>, j = a.length - <span class="num">1</span>; i &lt; j; i++, j--) {
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  <span class="kw">return</span> a;
+}
+console.log(reverse([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>])); <span class="com">// [5, 4, 3, 2, 1]</span></code></pre>
+<p><strong>计数</strong> — 遍历 + 计数器，是最基础的套路（豆子计数、连号计数都是它）。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> countChar(str, ch) {
+  <span class="kw">let</span> count = <span class="num">0</span>;
+  <span class="kw">for</span> (<span class="kw">const</span> c <span class="kw">of</span> str) <span class="kw">if</span> (c === ch) count++;
+  <span class="kw">return</span> count;
+}
+console.log(countChar(<span class="str">'kakkerlak'</span>, <span class="str">'k'</span>)); <span class="com">// 4</span></code></pre>
+<p><strong>合并区间</strong> — 先按起点排序，再扫描；能接上就扩展右端点，接不上就开新的。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> merge(intervals) {
+  <span class="kw">if</span> (intervals.length === <span class="num">0</span>) <span class="kw">return</span> [];
+  <span class="kw">const</span> sorted = intervals.map(iv =&gt; [...iv]).sort((a, b) =&gt; a[<span class="num">0</span>] - b[<span class="num">0</span>]);
+  <span class="kw">const</span> out = [sorted[<span class="num">0</span>]];
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i &lt; sorted.length; i++) {
+    <span class="kw">const</span> last = out[out.length - <span class="num">1</span>];
+    <span class="kw">if</span> (sorted[i][<span class="num">0</span>] &lt;= last[<span class="num">1</span>]) {              <span class="com">// 有重叠</span>
+      last[<span class="num">1</span>] = Math.max(last[<span class="num">1</span>], sorted[i][<span class="num">1</span>]); <span class="com">// 右端点取更远的</span>
+    } <span class="kw">else</span> {
+      out.push(sorted[i]);                       <span class="com">// 没有重叠，开新区间</span>
+    }
+  }
+  <span class="kw">return</span> out;
+}
+console.log(merge([[<span class="num">1</span>, <span class="num">3</span>], [<span class="num">2</span>, <span class="num">6</span>], [<span class="num">8</span>, <span class="num">10</span>], [<span class="num">15</span>, <span class="num">18</span>]])); <span class="com">// [[1,6],[8,10],[15,18]]</span></code></pre>
+<p><strong>Kadane 最大子序和</strong> — 滚动的"以 i 结尾的最大和"，前面是负的就重新开始。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> maxSubArray(nums) {
+  <span class="kw">let</span> now = nums[<span class="num">0</span>], best = nums[<span class="num">0</span>];
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i &lt; nums.length; i++) {
+    now = now &lt; <span class="num">0</span> ? nums[i] : now + nums[i];
+    best = Math.max(now, best);
+  }
+  <span class="kw">return</span> best;
+}
+console.log(maxSubArray([-<span class="num">2</span>, <span class="num">1</span>, -<span class="num">3</span>, <span class="num">4</span>, -<span class="num">1</span>, <span class="num">2</span>, <span class="num">1</span>, -<span class="num">5</span>, <span class="num">4</span>])); <span class="com">// 6</span></code></pre>
+<p><strong>轮转数组（三种解法）</strong> — 从"用 API 凑"到"原地三步反转"。写法一就是你原来的 <code>unshift</code> + <code>pop</code> 循环（O(k·n)），写法二是下面的 <code>splice</code>。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="com">// 写法二：splice 一次切走尾巴再塞回头（O(n)）</span>
+<span class="kw">function</span> rotate(nums, k) {
+  k %= nums.length;
+  nums.unshift(...nums.splice(nums.length - k, k));
+  <span class="kw">return</span> nums;
+}
+console.log(rotate([-<span class="num">1</span>, -<span class="num">100</span>, <span class="num">3</span>, <span class="num">99</span>], <span class="num">2</span>)); <span class="com">// [3, 99, -1, -100]</span></code></pre>
+<pre class="code" data-lang="js"><code class="language-js"><span class="com">// 写法三：三次反转（全部反转 → 前 k 个反转 → 剩下反转），O(n) 且不用额外数组</span>
+<span class="kw">function</span> rotate2(nums, k) {
+  k %= nums.length;
+  <span class="kw">const</span> rev = (arr, i, j) =&gt; {
+    <span class="kw">while</span> (i &lt; j) { [arr[i], arr[j]] = [arr[j], arr[i]]; i++; j--; }
+  };
+  rev(nums, <span class="num">0</span>, nums.length - <span class="num">1</span>);
+  rev(nums, <span class="num">0</span>, k - <span class="num">1</span>);
+  rev(nums, k, nums.length - <span class="num">1</span>);
+  <span class="kw">return</span> nums;
+}
+console.log(rotate2([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>, <span class="num">7</span>], <span class="num">3</span>)); <span class="com">// [5, 6, 7, 1, 2, 3, 4]</span></code></pre>
+<p><strong>除自己以外乘积</strong> — 每个位置 = 左边所有数的积 × 右边所有数的积，两趟搞定，不用除法。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> productExceptSelf(nums) {
+  <span class="kw">const</span> res = <span class="kw">new</span> Array(nums.length).fill(<span class="num">1</span>);
+  <span class="kw">let</span> left = <span class="num">1</span>;
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; nums.length; i++) { res[i] = left; left *= nums[i]; }
+  <span class="kw">let</span> right = <span class="num">1</span>;
+  <span class="kw">for</span> (<span class="kw">let</span> i = nums.length - <span class="num">1</span>; i &gt;= <span class="num">0</span>; i--) { res[i] *= right; right *= nums[i]; }
+  <span class="kw">return</span> res;
+}
+console.log(productExceptSelf([-<span class="num">1</span>, <span class="num">1</span>, <span class="num">0</span>, -<span class="num">3</span>, <span class="num">3</span>])); <span class="com">// [0, 0, 9, 0, 0]</span></code></pre>
+<p><strong>深比较</strong> — 先比基本值和引用，再比类型、属性个数、每个属性递归。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">function</span> deepEqual(a, b) {
+  <span class="kw">if</span> (a === b) <span class="kw">return</span> <span class="kw">true</span>;
+  <span class="kw">if</span> (<span class="kw">typeof</span> a !== <span class="str">'object'</span> || <span class="kw">typeof</span> b !== <span class="str">'object'</span> || a === <span class="kw">null</span> || b === <span class="kw">null</span>) <span class="kw">return</span> <span class="kw">false</span>;
+  <span class="kw">const</span> ka = Object.keys(a), kb = Object.keys(b);
+  <span class="kw">if</span> (ka.length !== kb.length) <span class="kw">return</span> <span class="kw">false</span>;
+  <span class="kw">return</span> ka.every(k =&gt; Object.hasOwn(b, k) &amp;&amp; deepEqual(a[k], b[k]));
+}
+console.log(deepEqual(<span class="num">1</span>, <span class="num">2</span>));  <span class="com">// false ← 你原来这里返回 true</span>
+console.log(deepEqual([<span class="num">1</span>, [<span class="num">2</span>]], [<span class="num">1</span>, [<span class="num">2</span>]])); <span class="com">// true</span></code></pre>
+<p><strong>去重</strong> — 两种写法，从笨到快。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">const</span> arr = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>];
+console.log(arr.filter((x, i) =&gt; arr.indexOf(x) === i)); <span class="com">// [1, 2, 3] ← 第一次出现才留</span>
+console.log([...<span class="kw">new</span> Set(arr)]);                           <span class="com">// [1, 2, 3] ← 最简单</span></code></pre>
+<h2 id="s40">5. 你代码里的坑（按文件）</h2>
+<div class="table-wrap"><table><thead><tr><th>文件</th><th>问题</th><th>怎么改</th></tr></thead><tbody><tr><td>week2/列表.js</td><td>第 29 行 <code>let key in a</code> 是语法错误，整个文件都不执行（连前面的 log 都没有）</td><td>删掉最后三行</td></tr><tr><td>week2/列表.js</td><td><code>deepEqual(1, 2)</code> 返回 true；<code>deepEqual(null, {})</code> 直接抛错</td><td>先判 <code>typeof</code> 和 <code>null</code>，见第 4 节</td></tr><tr><td>week2/反转数组.js</td><td>循环条件用长度奇偶分情况，绕</td><td>双指针：<code>for (let i = 0, j = a.length - 1; i &lt; j; i++, j--)</code></td></tr><tr><td>week2/范围内总合.js</td><td><code>result = []</code> 没声明 → 隐式全局变量</td><td>加 <code>const</code>；<code>start &lt; end</code> 时传负 step 会死循环，要判断方向</td></tr><tr><td>week2/豆子计数.js</td><td>用 <code>==</code> 比较</td><td>一律 <code>===</code>；<code>countBs</code> 可以直接 <code>const countBs = s =&gt; countChar(s, 'B')</code></td></tr><tr><td>week2/递归.js</td><td>负数返回字符串，<code>if (isEven(-1))</code> 会成立（非空字符串是 truthy）</td><td>统一返回布尔值，或直接 <code>Math.abs(n) % 2 === 0</code></td></tr><tr><td>week2/炸金花.js</td><td>四段一模一样的代码；<code>count</code> 跨花色没重置</td><td>用循环花色 + <code>continue</code> 合并成一份，见 2.7</td></tr><tr><td>week3/分组.js</td><td><code>from()</code> 每调一次就追加一次 → 数据重复两遍</td><td>先清空 <code>this.m = []</code>，或改名叫 <code>addRange</code></td></tr><tr><td>week3/分组.js</td><td><code>this.m</code> 对外开放，外部能绕过 <code>add</code> 直接 push</td><td>返回副本 / 用 <code>Set</code></td></tr><tr><td>week3/所有.js</td><td>每个元素调了两次 <code>test</code>，回调有副作用就出错</td><td>只调一次：<code>if (!test(x)) return false</code></td></tr><tr><td>week3/原型的一些应用.JS</td><td><code>[...this.students]</code> 只是浅拷贝，学生对象还是同一个</td><td>要彻底隔离用 <code>structuredClone(this.students)</code></td></tr><tr><td>week3/向量类型.js</td><td>没有 <code>toString</code>，打印出来是一坨对象</td><td>加一个 <code>toString()</code> 方法，返回 <code>(x, y)</code> 这样的字符串</td></tr><tr><td>week3/力扣4/合并区间.js</td><td>只排了序，没写合并</td><td>见第 4 节完整版；<code>const</code> 不阻止 <code>sort</code> 改内容</td></tr><tr><td>week3/力扣4/子数列最大值.js</td><td>空数组会返回 undefined</td><td>开头加 <code>if (nums.length === 0) return 0</code></td></tr><tr><td>week3/力扣4/轮转数组.js</td><td><code>pop([nums.length - 1])</code> 参数无效；<code>let last</code> 没用上；k 大时慢</td><td><code>k %= nums.length</code> + <code>unshift(...splice(...))</code></td></tr><tr><td>week3/力扣4/除自己外乘积.js</td><td>O(n²)；<code>cheng</code> 依赖外部 <code>answer</code>；结果有 <code>-0</code></td><td>前后缀积 O(n)；把 <code>answer</code> 当参数传</td></tr><tr><td>week3/主要书写方向.js</td><td>0 字节空文件</td><td>没有内容可总结</td></tr></tbody></table></div>
+<h2 id="s41">6. 速查表：增删改查一张表</h2>
+<div class="table-wrap"><table><thead><tr><th>想做的事</th><th>方法</th><th>改原数组？</th><th>返回什么</th></tr></thead><tbody><tr><td>尾部加</td><td><code>push</code></td><td>是</td><td>新长度</td></tr><tr><td>尾部删</td><td><code>pop</code></td><td>是</td><td>被删元素</td></tr><tr><td>头部加</td><td><code>unshift</code></td><td>是</td><td>新长度</td></tr><tr><td>头部删</td><td><code>shift</code></td><td>是</td><td>被删元素</td></tr><tr><td>任意位置增删</td><td><code>splice</code></td><td>是</td><td>被删元素组成的数组</td></tr><tr><td>截一段</td><td><code>slice</code></td><td>否</td><td>新数组</td></tr><tr><td>拼接</td><td><code>concat</code></td><td>否</td><td>新数组</td></tr><tr><td>拍平</td><td><code>flat</code></td><td>否</td><td>新数组</td></tr><tr><td>转字符串</td><td><code>join</code></td><td>否</td><td>字符串</td></tr><tr><td>有没有某个值</td><td><code>includes</code></td><td>否</td><td>true / false</td></tr><tr><td>找下标</td><td><code>indexOf</code></td><td>否</td><td>下标 / -1</td></tr><tr><td>找元素</td><td><code>find</code></td><td>否</td><td>元素 / undefined</td></tr><tr><td>找元素下标</td><td><code>findIndex</code></td><td>否</td><td>下标 / -1</td></tr><tr><td>有一个满足吗</td><td><code>some</code></td><td>否</td><td>true / false</td></tr><tr><td>全部满足吗</td><td><code>every</code></td><td>否</td><td>true / false</td></tr><tr><td>每个都变</td><td><code>map</code></td><td>否</td><td>等长新数组</td></tr><tr><td>筛一部分</td><td><code>filter</code></td><td>否</td><td>新数组</td></tr><tr><td>压成一个值</td><td><code>reduce</code></td><td>否</td><td>任意值</td></tr><tr><td>排序</td><td><code>sort</code></td><td>是</td><td>排好的原数组</td></tr><tr><td>反转</td><td><code>reverse</code></td><td>是</td><td>反转后的原数组</td></tr><tr><td>取倒数第 n 个</td><td><code>at(-n)</code></td><td>否</td><td>元素</td></tr></tbody></table></div>
+<h2 id="s42">7. 建议的练习</h2>
+<ol><li>把 <code>列表.js</code> 的 <code>deepEqual</code> 补全，加上数组、<code>NaN</code>、<code>null</code>、日期，再和 <code>assert.deepStrictEqual</code> 对照。</li><li>用 <code>Set</code> 重写 <code>Group</code>，比较一下 40 多行和 5 行的差别。</li><li>把 <code>炸金花.js</code> 重构成「按花色分组」的一层循环，跑通文件里全部测试数据。</li><li>轮转数组分别用 <code>splice</code> 和「三次反转」写一遍，测 <code>k = 0</code>、<code>k = 数组长度</code>、<code>k &gt; 数组长度</code>。</li><li>把「除自己以外乘积」从 O(n²) 改到 O(n)，再加一条限制：不许多开一个数组。</li><li>给 <code>Vec</code> 加上 <code>toString</code>、<code>static zero</code>、<code>equals(other)</code>。</li><li>用 <code>map / filter / reduce / every / some</code> 各写一行代码，过程中不许出现 <code>for</code>。</li></ol>
+<h2 id="s43">附录：几个 HTML 里的 JS（不是 .js 文件，顺手补上）</h2>
+<p><strong><code>#三角.html</code></strong> — 字符串 <code>+=</code> 累加，每次多一个 <code>#</code>，就是一个直角三角形。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">let</span> result = <span class="str">''</span>;
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt;= <span class="num">7</span>; i++) {
+  result += <span class="str">'#'</span>;      <span class="com">// 字符串拼接</span>
+  console.log(result);
+}</code></pre>
+<p><strong><code>fizzbuzz.html</code></strong> — <code>%</code> 判断整除；条件要从"最特殊"往"最普通"写，<code>15</code> 的倍数必须放最前面。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i &lt;= <span class="num">15</span>; i++) {
+  <span class="kw">if</span> (i % <span class="num">15</span> === <span class="num">0</span>) console.log(<span class="str">'FizzBuzz'</span>);   <span class="com">// 3 和 5 的公倍数</span>
+  <span class="kw">else</span> <span class="kw">if</span> (i % <span class="num">3</span> === <span class="num">0</span>) console.log(<span class="str">'Fizz'</span>);
+  <span class="kw">else</span> <span class="kw">if</span> (i % <span class="num">5</span> === <span class="num">0</span>) console.log(<span class="str">'Buzz'</span>);
+  <span class="kw">else</span> console.log(i);
+}</code></pre>
+<p><strong><code>棋盘.html</code></strong> — 8×8 棋盘，用"行号 + 列号"的奇偶性判断交替，比原代码用两个计数器简单。</p>
+<pre class="code" data-lang="js"><code class="language-js"><span class="kw">let</span> board = <span class="str">''</span>;
+<span class="kw">for</span> (<span class="kw">let</span> row = <span class="num">0</span>; row &lt; <span class="num">8</span>; row++) {
+  <span class="kw">for</span> (<span class="kw">let</span> col = <span class="num">0</span>; col &lt; <span class="num">8</span>; col++) {
+    board += (row + col) % <span class="num">2</span> === <span class="num">0</span> ? <span class="str">'#'</span> : <span class="str">' '</span>;
+  }
+  board += <span class="str">'\n'</span>;
+}
+console.log(board);</code></pre></main>
+</div>
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.side nav a'));
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  var heads = Array.prototype.slice.call(document.querySelectorAll('h2[id],h3[id]'));
+  var current = null;
+  function activate(id){
+    if (current === id) return;
+    current = id;
+    links.forEach(function(a){ a.classList.remove('active'); });
+    var el = map[id];
+    if (!el) return;
+    el.classList.add('active');
+    var box = el.closest('.side');
+    if (box) {
+      var top = el.offsetTop - box.clientHeight / 2;
+      box.scrollTo({ top: top > 0 ? top : 0, behavior: 'smooth' });
+    }
+  }
+  function onScroll(){
+    var y = window.pageYOffset + 140;
+    var id = heads.length ? heads[0].id : null;
+    for (var i = 0; i < heads.length; i++) {
+      if (heads[i].offsetTop <= y) id = heads[i].id;
+    }
+    if (id) activate(id);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>

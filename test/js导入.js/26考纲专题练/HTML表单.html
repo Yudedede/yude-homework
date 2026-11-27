@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单练习</title>
+</head>
+<body>
+    <form action="">
+        <label for="username">用户名:</label>
+      <input type="text" id="username" required placeholder="请输入内容">  
+      <br><br>
+      <label for="psw">密码:  </label>
+      <input type="password" id="psw" placeholder="默认密码：身份证后六位">
+    <br><br>
+       <span>性别:</span>
+       <label for="male">男</label>
+       <input type="radio" name="gender"  checked  >
+       <label for="male" >女</label>
+       <input type="radio"name="gender">
+<br><br>
+      <label>爱好：</label>
+      <input type="checkbox" name="hobby">唱
+      <input type="checkbox" name="hobby">跳
+      <input type="checkbox" name="hobby">rap
+      <input type="checkbox" name="hobby">篮球
+      <br><br>
+      <label for="age">年龄</label>
+      <input type="number" id="age" required>
+      <br><br>
+      <label for="bir">出生日期</label>
+      <input id="bir" required type="date">
+      <br><br>
+      <label for="city">城市</label>
+      <select id="city">
+        <option value="衡水">衡水</option>
+        <option value="河北">河北</option>
+
+      </select>
+      <label for="introduce">自我介绍</label>
+      <textarea id="introduce" cols="300" rows="10"></textarea>
+<input type="submit" value="点此提交">
+<input type="button" value="普通按钮">
+
+<input type="reset" value="重置按钮">
+
+<!-- type还有email 颜色color 范围range  -->
+    </form>
+</body>
+</html>

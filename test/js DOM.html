@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="box1">这是一个id选择器标签</div>
+    <div class="box2">这是一个class选择器标签</div>
+    <div>这是一个标签选择器标签</div>
+    <a href="#">跳转链接</a>
+    <button>点击按钮</button>
+    <script>
+        var element_id =document.getElementById("box1");
+        console.log(element_id);
+        var element_class =document.getElementsByClassName("box2")[0]; 
+        console.log(element_class);
+        var element_tag =document.getElementsByTagName("div")[2];
+        console.log(element_tag);
+        element_id.innerHTML="这是一个id选择器标签修改后的内容";
+        element_class.innertText="这是一个class选择器标签修改后的内容";
+        element_tag.style.color="red";
+        // DOM 属性绑定事件
+       var button_element = document.getElementsByTagName("button")[0];
+       console.log(button_element);
+         button_element.onclick=function(){
+                alert("点击按钮");
+          }
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* 藏起来但保留可点击、可键盘聚焦 */
+.t-input{
+  position: absolute;
+  opacity: 0;
+  width: 1px; height: 1px;
+}
+
+.panel{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease, padding .3s ease;
+  padding: 0 12px;
+  background: #f7f5ef;
+  border-radius: 8px;
+}
+.panel:not(:empty){ }
+
+/* 选中时展开 */
+.t-input:checked ~ .panel{
+  max-height: 300px;
+  padding: 12px;
+}
+</style>
+<body>
+    <label for="t" class="switcher">点我展开／收起</label>
+
+<input type="checkbox" id="t" class="t-input">
+
+<div class="panel">
+  这里是内容。<br>再点一次上面的字就收起。
+</div>
+</body>
+</html>

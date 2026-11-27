@@ -1,0 +1,175 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.ground {
+   min-height: 100vh;
+    background-color: rgba(37, 45, 74);
+}
+.set {
+    position:absolute;
+    left: 50%;
+    color: white;
+    font-size: 25px;
+}
+.line {
+    position:absolute;
+    top: 40px;
+    left:40px;
+    width:95%;
+    height: 2px;
+    background-color: rgb(255, 255, 255,0.5);
+}
+.jian {
+    position:absolute;
+    top:70px;
+    left: 110px;
+    color: white;
+    font-size: 20px;
+    width:40%;
+    padding-left: 10px;
+
+}
+#shu:hover{
+background: linear-gradient(to right, rgb(14,103,151,1), rgb(14, 103,151,0));
+    border-top: 1px solid  rgb(19, 202, 255) ;
+    border-bottom: 1px solid rgb(19, 202, 255) ;
+    border-left: 1px solid rgb(19, 202, 255);
+    border-radius: 3px 0 0 3px; 
+}
+.shi{
+    position:absolute;
+    top:120px;
+    left: 110px;
+    color: white;
+    font-size: 20px;
+    width:40%;
+    padding-left: 10px;
+
+}
+#pin:hover{
+    background: linear-gradient(to right, rgb(14,103,151,1), rgb(14, 103,151,0));
+    border-top: 1px solid  rgb(19, 202, 255) ;
+    border-bottom: 1px solid rgb(19, 202, 255) ;
+    border-left: 1px solid rgb(19, 202, 255);
+    border-radius: 3px 0 0 3px;
+}
+.sheng{
+    position:absolute;
+    top:170px;
+    left: 110px;
+    color: white;
+    font-size: 20px;
+    width:40%;
+    padding-left: 10px;
+
+}
+#yin:hover{
+    background: linear-gradient(to right, rgb(14,103,151,1), rgb(14, 103,151,0));
+    border-top: 1px solid  rgb(19, 202, 255) ;
+    border-bottom: 1px solid rgb(19, 202, 255) ;
+    border-left: 1px solid rgb(19, 202, 255);
+    border-radius: 3px 0 0 3px;
+}
+.shi2{
+    position:absolute;
+    top:220px;
+    left: 110px;
+    color: white;
+    font-size: 20px;
+    width:40%;
+    padding-left: 10px;
+
+}
+#pu:hover{
+    background: linear-gradient(to right, rgb(14,103,151,1), rgb(14, 103,151,0));
+    border-top: 1px solid  rgb(19, 202, 255) ;
+    border-bottom: 1px solid rgb(19, 202, 255) ;
+    border-left: 1px solid rgb(19, 202, 255);
+    border-radius: 3px 0 0 3px ;
+}
+.yu{
+    position:absolute;
+    top: 270px;
+    left: 110px;
+    color: white;
+    font-size: 20px;
+    width:40%;
+    padding-left: 10px;
+
+}
+#yan:hover{
+    background: linear-gradient(to right, rgb(14,103,151,1), rgb(14, 103,151,0));
+    border-top: 1px solid  rgb(19, 202, 255) ;
+    border-bottom: 1px solid rgb(19, 202, 255) ;
+    border-left: 1px solid rgb(19, 202, 255);
+    border-radius: 3px 0 0 3px;
+}
+    .you{
+        position:absolute;
+        top:320px;
+        left: 110px;
+        color: white;
+        font-size: 20px;
+        width:40%;
+        padding-left: 10px;
+
+    }
+    #xi:hover{
+        background: linear-gradient(to right, rgb(14,103,151,1), rgb(14, 103,151,0));
+        border-top: 1px solid  rgb(19, 202, 255) ;
+        border-bottom: 1px solid rgb(19, 202, 255) ;
+        border-left: 1px solid rgb(19, 202, 255);
+        border-radius: 3px 0 0 3px;
+    }
+    .liu{
+        position:absolute;
+        top:370px;
+        left: 110px;
+        color: white;
+        font-size: 20px;
+        width:40%;
+        padding-left: 10px;
+
+    }
+    #ji:hover{
+        background: linear-gradient(to right, rgb(14,103,151,1), rgb(14, 103,151,0));
+        border-top: 1px solid  rgb(19, 202, 255) ;
+        border-bottom: 1px solid rgb(19, 202, 255) ;
+        border-left: 1px solid rgb(19, 202, 255);
+        border-radius: 3px 0 0 3px;
+    }
+.zhi{
+        position:absolute;
+        top:420px;
+        left: 110px;
+        color: white;
+        font-size: 20px;
+        width:40%;
+        padding-left: 10px;
+
+    }
+ #ming:hover{
+        background: linear-gradient(to right, rgb(14,103,151,1), rgb(14, 103,151,0));
+        border-top: 1px solid  rgb(19, 202, 255) ;
+        border-bottom: 1px solid rgb(19, 202, 255) ;
+        border-left: 1px solid rgb(19, 202, 255);
+        border-radius: 3px 0 0 3px;
+    }
+.mo{
+        position:absolute;
+        top:470px;
+        left: 110px;
+        color: white;
+        font-size: 20px;
+        width:40%;
+        padding-left: 10px;
+
+    }
+ #she:hover{
+        background: linear-gradient(to right, rgb(14,103,151,1), rgb(14, 103,151,0));
+        border-top: 1px solid  rgb(19, 202, 255) ;
+        border-bottom: 1px solid rgb(19, 202, 255) ;
+        border-left: 1px solid rgb(19, 202, 255);
+        border-radius: 3px 0 0 3px;
+    }

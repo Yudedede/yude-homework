@@ -1,0 +1,26 @@
+.circle {
+    width:100px;
+    height: 100px;
+    background-color: red;
+    border-radius: 50%;
+    }
+    .circle2 {
+    width:100px;
+    height: 100px;
+    background-color: red;
+    clip-path: circle(50%);
+    }
+    /* 圆角要大于宽、高的一半 */
+    .sanjiao {
+        width:0;
+        border-top: 50px solid blue;
+        border-bottom: 50px solid transparent;
+        border-left:50px solid transparent;
+        border-right:50px solid transparent;
+    }
+    .sanjiao2 {
+        width:100px;
+        height: 100px;
+        background-color: blue;
+        clip-path: polygon(50% 0%, 0% 100%, 100% 100%)
+    }

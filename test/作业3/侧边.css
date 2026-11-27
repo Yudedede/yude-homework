@@ -1,0 +1,131 @@
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+.ground {
+    width: 100%;
+    height: 100%;
+    background-color: #000000dd;
+    display: flex;
+}
+.sidebar {
+display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 200px;
+}
+
+.xinjian {
+ color:white;    
+ position: absolute;
+ top: 45px;
+ left: 10px;
+ font-size: 9px;
+ width: 120px;
+ height: 25px;
+ display: flex;
+ align-items: center;
+ padding-left: 26px;
+ border-radius: 8px;
+ border: 0.09px solid #ffffff56;
+ cursor: pointer;
+
+ 
+}
+
+.cr {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 16px;
+    left: 93px;
+    font-size: 12px;
+    color: #ffffffba;
+    width: 30px;
+    background-color: #ffffff1a;
+    border-radius: 4px;
+
+}
+.k {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 16px;
+    left: 125px;
+
+    font-size: 12px;
+    color: #ffffffba;
+    width: 16px;
+    background-color: #ffffff1a;
+    border-radius: 4px;
+
+}
+.logoimg {
+    width: 25px;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+.xinimg {
+    position: absolute;
+    left: 7px;
+    top: 4px;
+}
+.dao {
+    position: absolute;
+    left: 132px;
+    top: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+}
+.tan {
+    position:absolute;
+    display: flex;
+    left: 155px;
+    top: 12px;
+    background-color: #727070;
+    border-radius: 4px;
+    COLOR: white;
+    
+    align-items: center;
+    font-size: 12px;
+    width: 120px;
+    height: 25px;
+    padding-left: 10px;
+    box-shadow: 0px 0px 5px #000000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s , visibility 0.2s ;
+
+}
+.ken {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    padding: 2px 4px;
+    height: 13px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 78px;
+}
+.B {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    padding: 2px 4px;
+    height: 13px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 110px;
+}
+.dao:hover+.tan {
+    opacity: 1;
+    visibility: visible;
+}
+.wode {
+    color:white;
+}

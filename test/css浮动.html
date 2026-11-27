@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浮动</title>
+    <style>
+        .father{
+            background-color: red;
+            border: 5px solid black;
+            /* width: 500px; */
+            /* 清除浮动带来的高度坍塌 */
+            overflow: hidden;
+        }
+        /* .father::after{
+            content: "";
+            display: block;
+            clear: both;
+        } */
+        .son1{
+         width: 100px;
+         height: 100px;
+        background-color: yellow;
+        float: left;
+        }
+        .son2{
+         width: 100px;
+         height: 100px;
+        background-color: blue;
+        float: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="father">
+        <div class="son1" >左浮动</div>
+        <div class="son1" >左浮动</div>
+        <div class="son1" >左浮动</div>
+
+        <div class="son1" >左浮动</div>
+        <div class="son2" >右浮动</div>
+    </div>
+</body> 
+</html>
